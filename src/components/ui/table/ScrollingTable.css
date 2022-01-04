@@ -1,0 +1,13 @@
+.scrolling-table {
+    display: flex;
+    flex-direction: column;
+}
+
+.scrolling-table-head, .scrolling-table-body {
+    display: block;
+}
+
+.scrolling-table-body {
+    overflow-y: auto;
+    overflow-x: hidden;
+}

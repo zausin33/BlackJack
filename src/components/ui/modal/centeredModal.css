@@ -1,0 +1,50 @@
+.modal {
+    font-size: 28px;
+}
+
+.modal-background-black {
+    background-color: black;
+}
+
+.modal-dialog {
+    width: 585px;
+    max-width: 585px;
+    margin-top: 0;
+}
+
+.content-modal-small {
+    height: 327px;
+}
+
+.content-modal-big {
+    height: 640px;
+}
+
+.content-modal- {
+    height: auto;
+}
+
+.modal-body {
+    display: flex;
+    overflow: hidden;
+}
+
+.modal-header {
+    border: none;
+    padding: 10px 20px;
+    text-align: center;
+    justify-content: space-evenly;
+}
+
+.modal-footer {
+    border: none;
+    justify-content: space-around
+}
+
+.close-button {
+    border: none;
+    background: no-repeat;
+    font-size: 27px;
+    font-weight: 600;
+    color: #BCBCBC;
+}

@@ -1,0 +1,191 @@
+:root {
+    --primary-color: #000000;
+    --primary-color-contrast: #C1B474;
+    --primary-color-focus: #C1B474;
+    --primary-color-light: #363636;
+
+    --link-color: #00bcd4;
+    --link-color-hover: #0094a7;
+    --link-color-disabled: lightskyblue;
+    --link-color-dark: #004048;
+    --link-color-contrast: #fff;
+
+    --error-color: #dc3545;
+    --error-color-contrast: #fff;
+
+    --info-color: #17a2b8;
+    --info-color-contrast: #fff;
+
+    --warn-color: #ffc107;
+    --warn-color-contrast: #212529;
+
+    --row-padding: .5em;
+    --border-radius: .25em;
+
+    --font-family: "Carattere", sans-serif;
+    --font-family-sans-serif: Roboto, -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial,
+    "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+
+    --header-height: 100px;
+
+    --primary: var(--primary-color);
+    --info: var(--info-color);
+    --warning: var(--warn-color);
+    --danger: var(--error-color);
+
+    --body-color: var(--primary-color-contrast);
+    --body-background: #ffffffff;
+}
+
+html {
+    height: 100%;
+}
+
+body {
+    height: 100%;
+    min-width: 1070px;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    padding-top: 0;
+    background: var(--body-background);
+    color: var(--body-color);
+}
+
+body, .tooltip, .popover {
+    font-family: var(--font-family);
+}
+
+h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 {
+    font-weight: normal;
+    margin: 0;
+    padding: 0;
+}
+
+h1, .h1 {
+    font-size: 4rem;
+}
+
+h2, .h2 {
+    font-size: 2.5rem;
+}
+
+.btn-primary,
+.custom-control-input:checked ~ .custom-control-label::before {
+    color: var(--primary-color-contrast);
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    border-radius: 0;
+    padding: 0;
+    line-height: 1.25;
+}
+
+.btn-primary-big {
+    width: 300px;
+    font-size: 40px;
+}
+
+.btn-primary-small {
+    width: 200px;
+    font-size: 25px;
+}
+
+.btn-primary:disabled {
+    color: var(--primary-color-contrast);
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.btn-primary:hover, .btn-primary:focus,
+.custom-control-input:not(:disabled):active ~ .custom-control-label::before {
+    color: var(--primary-color-contrast);
+    background-color: var(--primary-color-light);
+    border-color: var(--primary-color);
+}
+
+.btn-primary, .btn-primary:focus, .btn-primary:active:focus {
+    box-shadow: none;
+}
+
+.custom-control-input:focus ~ .custom-control-label::before {
+    color: var(--primary-color-contrast);
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.2rem var(--primary-color-focus);
+}
+
+.btn-primary:not(:disabled):not(.disabled):active, .btn-primary:not(:disabled):not(.disabled).active, .show > .btn-primary.dropdown-toggle {
+    color: var(--primary-color-contrast);
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.btn-secondary, .btn-secondary:focus, .btn-secondary:active:focus {
+    color: #ffffff;
+    background-color: #ff6a33ba;
+    border-color: #ff6a33ba;
+    font-family: var(--font-family-sans-serif);
+    box-shadow: none;
+}
+
+.btn-secondary-big {
+    width: 160px;
+    font-size: 1rem;
+}
+
+.btn-secondary:hover, .btn-secondary:active {
+    color: #ffffff;
+    background-color: #f98d65ba;
+    border-color: #ff6a33ba;
+}
+
+.btn-secondary.disabled,
+.btn-secondary:disabled {
+    cursor: not-allowed;
+    color: #898989;
+    background-color: #dbdbdb;
+    border-color: #919191;
+}
+
+.form-control:focus, .custom-select:focus {
+    box-shadow: 0 0 0 0.2rem var(--primary-color-focus);
+    border: 1px solid #ced4da;
+}
+
+.form-control {
+    border: 1px solid var(--primary-color);
+}
+
+.form-control, .card, .btn {
+    border-radius: 0;
+}
+
+header {
+    background-color: var(--primary-color);
+    color: var(--primary-color-contrast);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: var(--header-height);
+}
+
+.center {
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+}
+
+.box-shadow {
+    border: 1px solid #707070;
+    border-radius: 27px;
+    box-shadow: 0 3px 13px 0 black;
+}
+
+.box-shadow-edged {
+    border-radius: 0;
+    box-shadow: 0 3px 13px 0 black;
+}

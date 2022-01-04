@@ -1,14 +1,23 @@
-import { Outlet } from "react-router-dom";
+import { Outlet, useOutletContext } from "react-router-dom";
 import React from "react";
-import Header from "./components/parts/header";
+import Header from "./components/layout/header";
+import HumanPlayer from "./model/player/HumanPlayer";
+import useLocalStorageForProfiles from "./utils/hooks/useLocalStorageForProfiles";
 
-function App(): JSX.Element {
+export default function App(): JSX.Element {
+  const [profileList, setProfileList] = useLocalStorageForProfiles("profileList", []);
+  const activeProfile = profileList.find((profile) => profile.isActive());
+
   return (
     <div className="App">
-      <Header />
-      <Outlet />
+      <Header activeProfile={activeProfile} />
+      <Outlet context={[profileList, setProfileList]} />
     </div>
   );
 }
 
-export default App;
+type UseProfile = [HumanPlayer[], (profileList: HumanPlayer[]) => void];
+
+export function useProfile(): UseProfile {
+  return useOutletContext<UseProfile>();
+}

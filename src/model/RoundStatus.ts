@@ -1,0 +1,13 @@
+enum RoundStatus {
+    RUNNING = "RUNNING",
+    PLAYER_TO_MUCH_POINTS = "PLAYER_TO_MUCH_POINTS",
+    WON = "WON",
+    LOST = "LOST",
+    LOST_SPLIT_HAND = "LOST_SPLIT_HAND",
+    TIE = "TIE",
+    BLACKJACK = "BLACKJACK",
+    BLACKJACK_TIE = "BLACKJACK_TIE",
+    END_SPLIT_ROUND = "END_SPLIT_ROUND"
+}
+
+export default RoundStatus;
