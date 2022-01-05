@@ -3,8 +3,6 @@ import Player from "./Player";
 class HumanPlayer extends Player {
   public static readonly START_MONEY = 2000;
 
-  private numberPlayedGames = 0;
-
   private money = HumanPlayer.START_MONEY;
 
   private active = false;
@@ -18,14 +16,6 @@ class HumanPlayer extends Player {
     const player = new HumanPlayer("");
     Object.assign(player, data);
     return player;
-  }
-
-  public getNumberPlayedGames():number {
-    return this.numberPlayedGames;
-  }
-
-  public increaseNumberPlayedGames():void {
-    this.numberPlayedGames += 1;
   }
 
   public getMoney():number {

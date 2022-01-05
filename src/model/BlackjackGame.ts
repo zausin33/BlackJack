@@ -108,6 +108,8 @@ class BlackjackGame {
     if (this.roundStatus === RoundStatus.LOST_SPLIT_HAND) {
       this.roundStatus = RoundStatus.RUNNING;
     } else {
+      this.player.increaseNumberPlayedGames();
+      this.dealer.increaseNumberPlayedGames();
       this.startRound();
     }
   }

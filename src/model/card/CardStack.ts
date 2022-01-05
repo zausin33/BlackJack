@@ -8,15 +8,15 @@ class CardStack {
   public initialize(): void {
     this.fillCarsStack();
     this.shuffle();
-    this.cards.unshift(new Card(CardColor.DIAMONDS, CardNumber.EIGHT, true));
-    this.cards.unshift(new Card(CardColor.DIAMONDS, CardNumber.SEVEN, true));
-    this.cards.unshift(new Card(CardColor.DIAMONDS, CardNumber.NINE, true));
-    this.cards.unshift(new Card(CardColor.DIAMONDS, CardNumber.SEVEN, true));
-    this.cards.unshift(new Card(CardColor.DIAMONDS, CardNumber.SEVEN, true));
-    this.cards.unshift(new Card(CardColor.DIAMONDS, CardNumber.SEVEN, true));
-    this.cards.unshift(new Card(CardColor.DIAMONDS, CardNumber.SEVEN, true));
-    this.cards.unshift(new Card(CardColor.DIAMONDS, CardNumber.SEVEN, true));
-    this.cards.unshift(new Card(CardColor.DIAMONDS, CardNumber.SEVEN, true));
+    this.cards.unshift(new Card(100001, CardColor.DIAMONDS, CardNumber.EIGHT, true));
+    this.cards.unshift(new Card(100002, CardColor.DIAMONDS, CardNumber.SEVEN, true));
+    this.cards.unshift(new Card(100003, CardColor.DIAMONDS, CardNumber.NINE, true));
+    this.cards.unshift(new Card(100004, CardColor.DIAMONDS, CardNumber.SEVEN, true));
+    this.cards.unshift(new Card(100005, CardColor.DIAMONDS, CardNumber.SEVEN, true));
+    this.cards.unshift(new Card(100006, CardColor.CLUBS, CardNumber.SEVEN, true));
+    this.cards.unshift(new Card(100007, CardColor.DIAMONDS, CardNumber.SEVEN, true));
+    this.cards.unshift(new Card(100008, CardColor.HEARTS, CardNumber.SEVEN, true));
+    this.cards.unshift(new Card(100009, CardColor.DIAMONDS, CardNumber.SEVEN, true));
   }
 
   public shift(): Card {
@@ -24,11 +24,14 @@ class CardStack {
   }
 
   private fillCarsStack(): void {
+    let idCounter = 0;
     for (let i = 0; i < 6; i += 1) {
+      // eslint-disable-next-line no-loop-func
       Object.values(CardColor).forEach((cardColor) => {
         Object.values(CardNumber).forEach((cardNumber) => {
-          const card = new Card(cardColor as CardColor, cardNumber as CardNumber, true);
+          const card = new Card(idCounter, cardColor as CardColor, cardNumber as CardNumber, true);
           this.cards.push(card);
+          idCounter += 1;
         });
       });
     }

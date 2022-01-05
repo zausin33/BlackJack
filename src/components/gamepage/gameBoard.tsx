@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./gampageStyles.css";
 import CardDeck from "./cardDeck";
 import ButtonArea from "./buttonArea";
@@ -17,7 +17,19 @@ type GameBoardProps = {
 
 function GameBoard({ player, profileList, setProfileList }: GameBoardProps): JSX.Element {
   const [blackjackGames, setBlackjackGame] = useState(() => [new BlackjackGame(player)]);
+  const [roundHadEnded, setRoundHadEnded] = useState(false);
   const blackjackGame = blackjackGames[0];
+  const roundStatus = blackjackGame.getRoundStatus();
+
+  useEffect(() => {
+    if (roundStatus === RoundStatus.RUNNING) {
+      setRoundHadEnded(false);
+    } else {
+      setTimeout(() => {
+        setRoundHadEnded(true);
+      }, 900);
+    }
+  }, [roundStatus]);
 
   const updateGameBoard = ():void => {
     setBlackjackGame([...blackjackGames]);
@@ -49,7 +61,6 @@ function GameBoard({ player, profileList, setProfileList }: GameBoardProps): JSX
     updateGameBoard();
   };
 
-  const roundHadEnded = blackjackGame.getRoundStatus() !== RoundStatus.RUNNING;
   return (
     <div className="game-board">
       <div className="dealer-area">
@@ -66,6 +77,7 @@ function GameBoard({ player, profileList, setProfileList }: GameBoardProps): JSX
           onDoubleBet={onDoubleBet}
           canPlayerSplit={blackjackGame.getCanPlayerSplit()}
           onPlayerSplit={onPlayerSplit}
+          disabled={blackjackGame.getRoundStatus() !== RoundStatus.RUNNING}
         />
       </div>
       <div className="card-stack-area">

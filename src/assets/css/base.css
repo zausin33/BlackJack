@@ -144,9 +144,9 @@ h2, .h2 {
 .btn-secondary.disabled,
 .btn-secondary:disabled {
     cursor: not-allowed;
-    color: #898989;
-    background-color: #dbdbdb;
-    border-color: #919191;
+    color: #ffffff;
+    background-color: #f98d65ba;
+    border-color: #ff6a33ba;
 }
 
 .form-control:focus, .custom-select:focus {

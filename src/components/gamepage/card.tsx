@@ -1,47 +1,46 @@
 import React, { useEffect, useRef } from "react";
 import CardModel from "../../model/card/Card";
+import usePrevious from "../../utils/hooks/usePrevious";
+import setTranslateForAnimation from "../../utils/domHelpers";
+import player from "../../model/player/Player";
 
 type CardProps = {
     card: CardModel;
+    playerName: string;
     style?: object;
+    isFromStack?: boolean;
 }
 
 export const imageFolder = "assets/images/cards/";
 
-function Card({ card, style = {} }: CardProps): JSX.Element {
+function Card({
+  card, playerName, style = {}, isFromStack = true,
+}: CardProps): JSX.Element {
   const cardRef = useRef<HTMLDivElement>(null);
+  const imgRef = useRef<HTMLImageElement>(null);
+  const previousIsConcealed = usePrevious<boolean>(card.isConcealed());
+  const isConcealed = card.isConcealed();
 
   useEffect(() => {
-    // eslint-disable-next-line no-use-before-define
-    func();
-  }, []);
+    if (isFromStack) {
+      setTranslateForAnimation("first-stack-img", cardRef);
+    } else {
+      setTranslateForAnimation(`card-deck-${playerName}`, cardRef);
+    }
+  }, [card]);
 
-  function evalRect(rect: DOMRect): { centerX: number, centerY: number } {
-    const centerX = rect.left + rect.width * 0.5;
-    const centerY = rect.top + rect.height * 0.5;
-    return { centerX, centerY };
-  }
-
-  function func(): void {
-    const cardStack = document.getElementById("first-stack-img");
-    if (!cardRef.current || !cardStack) return;
-    const target = cardRef.current;
-    const rectCardStack = cardStack.getBoundingClientRect();
-    const rectTarget = target.getBoundingClientRect();
-    const cardStackCenter = evalRect(rectCardStack);
-    const targetCenter = evalRect(rectTarget);
-
-    const translateX = cardStackCenter.centerX - targetCenter.centerX;
-    const translateY = cardStackCenter.centerY - targetCenter.centerY;
-
-    target.style.transform = `translate(${translateX}px, ${translateY}px) `;
-  }
+  useEffect(() => {
+    if (previousIsConcealed && !isConcealed && imgRef.current) {
+      imgRef.current.className = "game-card-image-uncover-animation";
+    }
+  }, [isConcealed]);
 
   return (
     <div className="game-card" style={style} ref={cardRef}>
       <img
         src={imageFolder + card.getImageName()}
         alt="Card"
+        ref={imgRef}
       />
     </div>
   );

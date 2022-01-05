@@ -8,16 +8,23 @@ class Card {
 
   public static VALUE_ACE_LOW = 1;
 
+  private readonly id: number;
+
   private readonly color: CardColor;
 
   private readonly number: CardNumber;
 
   private concealed = false;
 
-  constructor(color: CardColor, number: CardNumber, concealed: boolean) {
+  constructor(id: number, color: CardColor, number: CardNumber, concealed: boolean) {
+    this.id = id;
     this.color = color;
     this.number = number;
     this.concealed = concealed;
+  }
+
+  public getId(): number {
+    return this.id;
   }
 
   public getColor(): CardColor {

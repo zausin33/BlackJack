@@ -17,29 +17,39 @@ function CardDeck({ player, roundStatus }: CardDeckProps): JSX.Element {
   return (
     <>
       {player.getSplitHands().map(({ card, bet }, idx) => (
-        // eslint-disable-next-line react/no-array-index-key
-        <div className="split-hand-card-deck" key={`${idx}_${card.getImageName()}`}>
-          <Card card={card} />
+        <div className="split-hand-card-deck" key={card.getId()}>
+          <Card card={card} isFromStack={false} playerName={player.getName()} />
           <div className="card-deck-bet">
             <Money amount={bet} />
           </div>
         </div>
       ))}
-      <div className="card-deck">
-        {/* eslint-disable-next-line react/no-array-index-key */}
-        {cards.map((card: CardModel, idx) => (<Card card={card} key={`${idx}_${card.getImageName()}`} />))}
+      <div className="card-deck" id={`card-deck-${player.getName()}`}>
+        {cards.map((card: CardModel, idx) => (
+          <Card
+            card={card}
+            key={card.getId()}
+            playerName={player.getName()}
+          />
+        ))}
         <div className="card-deck-points">
           {player.getCardPoints()}
         </div>
       </div>
       {finishedSplitHands.map(({ cards: finishedSplitCards, bet }, idxHands) => (
         // eslint-disable-next-line react/no-array-index-key
-        <Fragment key={idxHands}>
+        <Fragment key={finishedSplitCards.map((card) => card.getId().toString()).reduce((id, ids) => id + ids, "")}>
           {(roundStatus !== RoundStatus.END_SPLIT_ROUND || idxHands !== 0) && (
             <div className="split-hand-card-deck">
-              {/* eslint-disable-next-line react/no-array-index-key */}
-              {finishedSplitCards.map((card, idx) => (<Card card={card} key={`${idxHands}_${idx}_${card.getImageName()}`} style={idx !== 0 ? { marginLeft: "-90px" } : {}} />))}
-
+              {finishedSplitCards.map((card, idx) => (
+                <Card
+                  card={card}
+                  key={card.getId()}
+                  style={idx !== 0 ? { marginLeft: "-90px" } : {}}
+                  isFromStack={false}
+                  playerName={player.getName()}
+                />
+              ))}
               <div className="card-deck-bet">
                 <Money amount={bet} />
               </div>

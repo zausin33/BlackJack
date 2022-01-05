@@ -7,6 +7,8 @@ import { FinishedSplitHand, SplitHand } from "./splitHandTypes";
 abstract class Player {
   private name = "";
 
+  private numberPlayedGames = 0;
+
   private hand: Card[] = [];
 
   private splitHands: SplitHand[] = [];
@@ -23,6 +25,14 @@ abstract class Player {
 
   protected setName(name: string): void {
     this.name = name;
+  }
+
+  public getNumberPlayedGames(): number {
+    return this.numberPlayedGames;
+  }
+
+  public increaseNumberPlayedGames(): void {
+    this.numberPlayedGames += 1;
   }
 
   public getHand(): Card[] {
