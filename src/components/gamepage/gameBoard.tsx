@@ -7,6 +7,7 @@ import HumanPlayer from "../../model/player/HumanPlayer";
 import BlackjackGame from "../../model/BlackjackGame";
 import RoundResultModal from "./roundResultModal";
 import RoundStatus from "../../model/RoundStatus";
+import CardStack from "./cardStack";
 
 type GameBoardProps = {
     player: HumanPlayer;
@@ -66,6 +67,9 @@ function GameBoard({ player, profileList, setProfileList }: GameBoardProps): JSX
           canPlayerSplit={blackjackGame.getCanPlayerSplit()}
           onPlayerSplit={onPlayerSplit}
         />
+      </div>
+      <div className="card-stack-area">
+        <CardStack />
       </div>
       <div className="player-area">
         <CardDeck player={blackjackGame.getHumanPlayer()} roundStatus={blackjackGame.getRoundStatus()} />
