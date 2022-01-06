@@ -7,7 +7,7 @@ import { useProfile } from "../../App";
 function GamePage(): JSX.Element {
   const [profileList, setProfileList] = useProfile();
   const navigate = useNavigate();
-  const activeProfile = profileList.find((profile) => profile.isActive());
+  const activeProfile = profileList.find((profile) => profile.isActive);
   useEffect(() => {
     if (!activeProfile) {
       navigate("/");

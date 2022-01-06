@@ -13,7 +13,7 @@ function Startpage(): JSX.Element {
   const [isNewProfileModalShown, setIsNewProfileModalShown] = React.useState(!someProfileExists);
 
   const setAllProfilesInactive = (): void => {
-    profileList.forEach((profile) => profile.setActive(false));
+    profileList.forEach((profile) => profile.isActive = false);
   };
 
   const onProfileCreate = (newProfile: HumanPlayer): void => {
@@ -23,18 +23,20 @@ function Startpage(): JSX.Element {
   };
 
   const getActiveProfile = (): HumanPlayer | undefined => profileList.find(
-    (profile) => profile.isActive(),
+    (profile) => profile.isActive,
   );
 
-  const onResetMoney = (): void => {
+  const onResetAccount = (): void => {
     const activeProfile = getActiveProfile();
-    activeProfile?.setMoney(HumanPlayer.START_MONEY);
+    if (!activeProfile) return;
+    activeProfile.money = HumanPlayer.START_MONEY;
+    activeProfile.resetNumberPlayedGames();
     setProfileList([...profileList]);
   };
 
   const onChangeActiveProfile = (newActiveProfile: HumanPlayer): void => {
     setAllProfilesInactive();
-    newActiveProfile.setActive(true);
+    newActiveProfile.isActive = true;
     setProfileList([...profileList]);
   };
 
@@ -42,7 +44,7 @@ function Startpage(): JSX.Element {
     <main>
       <ButtonArea
         setIsProfileModalShown={setIsChangeProfileModalShown}
-        onResetMoney={onResetMoney}
+        onResetAccount={onResetAccount}
         getActiveProfile={getActiveProfile}
       />
       <NewProfileModal

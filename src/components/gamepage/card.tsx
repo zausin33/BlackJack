@@ -18,8 +18,8 @@ function Card({
 }: CardProps): JSX.Element {
   const cardRef = useRef<HTMLDivElement>(null);
   const imgRef = useRef<HTMLImageElement>(null);
-  const previousIsConcealed = usePrevious<boolean>(card.isConcealed());
-  const isConcealed = card.isConcealed();
+  const previousIsConcealed = usePrevious<boolean>(card.isConcealed);
+  const { isConcealed } = card;
 
   useEffect(() => {
     if (isFromStack) {
@@ -38,7 +38,7 @@ function Card({
   return (
     <div className="game-card" style={style} ref={cardRef}>
       <img
-        src={imageFolder + card.getImageName()}
+        src={imageFolder + card.imageName}
         alt="Card"
         ref={imgRef}
       />

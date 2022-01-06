@@ -11,11 +11,11 @@ const calculateOptimalAcePoints = (value: number, numberAces: number): number =>
 const calculateCardPoints = (cards: Card[]): number => {
   let value = 0;
   let numberAces = 0;
-  cards.filter((card) => !card.isConcealed()).forEach((card) => {
-    const valueTmp = parseFloat(card.getNumber());
+  cards.filter((card) => !card.isConcealed).forEach((card) => {
+    const valueTmp = parseFloat(card.number);
     if (!Number.isNaN(valueTmp)) {
       value += valueTmp;
-    } else if (card.getNumber() === CardNumber.ACE) {
+    } else if (card.number === CardNumber.ACE) {
       numberAces += 1;
     } else {
       value += Card.VALUE_ROYAL_CARD;

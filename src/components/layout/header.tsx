@@ -37,9 +37,9 @@ function Header({ activeProfile }: HeaderProps): JSX.Element {
           </svg>
         </div>
         <div>
-          <div style={{ fontSize: "30px" }}>{activeProfile.getName()}</div>
+          <div style={{ fontSize: "30px" }}>{activeProfile.name}</div>
           <div style={{ fontSize: "25px", lineHeight: "0.7" }}>
-            <Money amount={activeProfile.getMoney()} />
+            <Money amount={activeProfile.money} />
           </div>
         </div>
       </div>

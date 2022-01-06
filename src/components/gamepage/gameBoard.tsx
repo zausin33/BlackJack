@@ -19,7 +19,7 @@ function GameBoard({ player, profileList, setProfileList }: GameBoardProps): JSX
   const [blackjackGames, setBlackjackGame] = useState(() => [new BlackjackGame(player)]);
   const [roundHadEnded, setRoundHadEnded] = useState(false);
   const blackjackGame = blackjackGames[0];
-  const roundStatus = blackjackGame.getRoundStatus();
+  const { roundStatus } = blackjackGame;
 
   useEffect(() => {
     if (roundStatus === RoundStatus.RUNNING) {
@@ -64,40 +64,40 @@ function GameBoard({ player, profileList, setProfileList }: GameBoardProps): JSX
   return (
     <div className="game-board">
       <div className="dealer-area">
-        <CardDeck player={blackjackGame.getDealer()} roundStatus={blackjackGame.getRoundStatus()} />
+        <CardDeck player={blackjackGame.dealer} roundStatus={blackjackGame.roundStatus} />
       </div>
       <div className="middle-area">
         <div className="bet-money-area">
-          <MoneyArea money={blackjackGame.getPlayerBet()} />
+          <MoneyArea money={blackjackGame.playerBet} />
         </div>
         <ButtonArea
           onHumanTakesCard={onHumanTakesCard}
           onStand={onStand}
-          canPlayerDouble={blackjackGame.getCanPlayerDoubleDown()}
+          canPlayerDouble={blackjackGame.canPlayerDoubleDown}
           onDoubleBet={onDoubleBet}
-          canPlayerSplit={blackjackGame.getCanPlayerSplit()}
+          canPlayerSplit={blackjackGame.canPlayerSplit}
           onPlayerSplit={onPlayerSplit}
-          disabled={blackjackGame.getRoundStatus() !== RoundStatus.RUNNING}
+          disabled={blackjackGame.roundStatus !== RoundStatus.RUNNING}
         />
       </div>
       <div className="card-stack-area">
         <CardStack />
       </div>
       <div className="player-area">
-        <CardDeck player={blackjackGame.getHumanPlayer()} roundStatus={blackjackGame.getRoundStatus()} />
+        <CardDeck player={blackjackGame.player} roundStatus={blackjackGame.roundStatus} />
         <div className="player-money-area">
           {/* TODO player money < round bet */}
-          <MoneyArea money={blackjackGame.getHumanPlayer().getMoney() - blackjackGame.getRoundBet()} />
+          <MoneyArea money={blackjackGame.player.money - blackjackGame.roundBet} />
         </div>
       </div>
       <RoundResultModal
         show={roundHadEnded}
         onHide={onStartNewRound}
-        roundStatus={blackjackGame.getRoundStatus()}
-        cardValuesDealer={blackjackGame.getDealer().getCardPoints()}
-        cardValuesPlayer={blackjackGame.getHumanPlayer().getCardPoints()}
-        moneyLostOrWon={blackjackGame.getMoneyLostOrWon()}
-        finishedSplitHands={blackjackGame.getHumanPlayer().getFinishedSplitHands()}
+        roundStatus={blackjackGame.roundStatus}
+        cardValuesDealer={blackjackGame.dealer.cardPoints}
+        cardValuesPlayer={blackjackGame.player.cardPoints}
+        moneyLostOrWon={blackjackGame.moneyLostOrWon}
+        finishedSplitHands={blackjackGame.player.finishedSplitHands}
       />
     </div>
   );

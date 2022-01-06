@@ -3,9 +3,9 @@ import Player from "./Player";
 class HumanPlayer extends Player {
   public static readonly START_MONEY = 2000;
 
-  private money = HumanPlayer.START_MONEY;
+  public money = HumanPlayer.START_MONEY;
 
-  private active = false;
+  public isActive = false;
 
   // eslint-disable-next-line no-useless-constructor
   public constructor(name: string) {
@@ -16,22 +16,6 @@ class HumanPlayer extends Player {
     const player = new HumanPlayer("");
     Object.assign(player, data);
     return player;
-  }
-
-  public getMoney():number {
-    return this.money;
-  }
-
-  public setMoney(money: number):void {
-    this.money = money;
-  }
-
-  public isActive():boolean {
-    return this.active;
-  }
-
-  public setActive(active: boolean):void {
-    this.active = active;
   }
 }
 

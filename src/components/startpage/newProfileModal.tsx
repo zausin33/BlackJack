@@ -29,7 +29,7 @@ function NewProfileModal(props: NewProfileModalProps): JSX.Element {
   const createNewProfile = (): void => {
     const newProfile = new HumanPlayer(newProfileName);
     setNewProfileName("");
-    newProfile.setActive(true);
+    newProfile.isActive = true;
     onProfileCreate(newProfile);
     onHide();
   };

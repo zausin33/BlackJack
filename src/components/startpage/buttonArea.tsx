@@ -6,15 +6,15 @@ import HumanPlayer from "../../model/player/HumanPlayer";
 
 type ButtonAreaProps = {
   setIsProfileModalShown(value: boolean): void;
-  onResetMoney(): void;
+  onResetAccount(): void;
   getActiveProfile(): HumanPlayer | undefined;
 }
 
 function ButtonArea(props: ButtonAreaProps): JSX.Element {
   const navigate = useNavigate();
-  const { setIsProfileModalShown, onResetMoney, getActiveProfile } = props;
+  const { setIsProfileModalShown, onResetAccount, getActiveProfile } = props;
 
-  const isPlayerMoneyEqualStartMoney = getActiveProfile()?.getMoney() === HumanPlayer.START_MONEY;
+  const isPlayerMoneyEqualStartMoney = getActiveProfile()?.money === HumanPlayer.START_MONEY;
 
   return (
     <Wrapper>
@@ -30,7 +30,7 @@ function ButtonArea(props: ButtonAreaProps): JSX.Element {
         </Button>
         <Button
           styleType="primary"
-          onClick={() => onResetMoney()}
+          onClick={() => onResetAccount()}
           disabled={isPlayerMoneyEqualStartMoney}
         >
           Konto zurücksetzen

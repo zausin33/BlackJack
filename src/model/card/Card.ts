@@ -8,43 +8,23 @@ class Card {
 
   public static VALUE_ACE_LOW = 1;
 
-  private readonly id: number;
+  public readonly id: number;
 
-  private readonly color: CardColor;
+  public readonly number: CardNumber;
 
-  private readonly number: CardNumber;
+  public readonly color: CardColor;
 
-  private concealed = false;
+  public isConcealed = false;
 
-  constructor(id: number, color: CardColor, number: CardNumber, concealed: boolean) {
+  constructor(id: number, color: CardColor, number: CardNumber, isConcealed: boolean) {
     this.id = id;
     this.color = color;
     this.number = number;
-    this.concealed = concealed;
+    this.isConcealed = isConcealed;
   }
 
-  public getId(): number {
-    return this.id;
-  }
-
-  public getColor(): CardColor {
-    return this.color;
-  }
-
-  public getNumber(): CardNumber {
-    return this.number;
-  }
-
-  public isConcealed(): boolean {
-    return this.concealed;
-  }
-
-  public setConcealed(concealed: boolean): void {
-    this.concealed = concealed;
-  }
-
-  public getImageName(): string {
-    return this.isConcealed()
+  public get imageName(): string {
+    return this.isConcealed
       ? "concealed.png"
       : `${this.color.toString()}-${this.number.toString()}.png`;
   }

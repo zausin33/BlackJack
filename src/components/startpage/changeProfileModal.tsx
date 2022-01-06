@@ -34,12 +34,12 @@ function ChangeProfileModal(props: ChangeProfileModalProps): JSX.Element {
       },
       cells: [
         { value: idx + 1, style: { width: "5%" } },
-        { value: profile.getName(), style: { width: "38%" } },
+        { value: profile.name, style: { width: "38%" } },
         {
-          value: `${profile.getMoney().toFixed(2)} €`,
+          value: `${profile.money.toFixed(2)} €`,
           style: { textAlign: "center", width: "30%" },
         },
-        { value: profile.getNumberPlayedGames(), style: { textAlign: "center", width: "27%" } },
+        { value: profile.numberPlayedGames, style: { textAlign: "center", width: "27%" } },
       ],
     })),
   };
