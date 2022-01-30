@@ -1,20 +1,18 @@
 import React, { useEffect, useRef } from "react";
 import CardModel from "../../model/card/Card";
 import usePrevious from "../../utils/hooks/usePrevious";
-import setTranslateForAnimation from "../../utils/domHelpers";
-import player from "../../model/player/Player";
+import { setTranslateForAnimation, setTranslateForAnimationWithSrcPos } from "../../utils/domHelpers";
 
 type CardProps = {
     card: CardModel;
-    playerName: string;
     style?: object;
-    isFromStack?: boolean;
+    isNotFromStack?: boolean;
 }
 
 export const imageFolder = "assets/images/cards/";
 
 function Card({
-  card, playerName, style = {}, isFromStack = true,
+  card, style = {}, isNotFromStack = false,
 }: CardProps): JSX.Element {
   const cardRef = useRef<HTMLDivElement>(null);
   const imgRef = useRef<HTMLImageElement>(null);
@@ -22,10 +20,13 @@ function Card({
   const { isConcealed } = card;
 
   useEffect(() => {
-    if (isFromStack) {
-      setTranslateForAnimation("first-stack-img", cardRef);
+    if (isNotFromStack) {
+      setTranslateForAnimationWithSrcPos(card.position, cardRef, card);
+    } else if (card.wasInSplitHand) {
+      setTranslateForAnimationWithSrcPos(card.position, cardRef, card);
+      card.wasInSplitHand = false;
     } else {
-      setTranslateForAnimation(`card-deck-${playerName}`, cardRef);
+      setTranslateForAnimation("first-stack-img", cardRef, card);
     }
   }, [card]);
 

@@ -2,9 +2,14 @@ import CardStack from "./card/CardStack";
 import HumanPlayer from "./player/HumanPlayer";
 import Dealer from "./player/Dealer";
 import Player from "./player/Player";
-import { BLACKJACK_BET_MULTIPLIER, BLACKJACK_NUMBER, THRESHOLD_DEALER_MUST_TAKE_CARD } from "./blackjackGameConstants";
+import {
+  BLACKJACK_BET_MULTIPLIER,
+  BLACKJACK_NUMBER,
+  DELAY,
+  THRESHOLD_DEALER_MUST_TAKE_CARD,
+} from "./blackjackGameConstants";
 import RoundStatus from "./RoundStatus";
-import { FinishedSplitHand } from "./player/splitHandTypes";
+import { FinishedHand } from "./player/splitHandTypes";
 import CardNumber from "./card/CardNumber";
 
 const checkForSplitEnding = () => (
@@ -40,24 +45,46 @@ class BlackjackGame {
 
   public readonly dealer:Dealer;
 
-  public playerBet = 0;
+  public initialRoundBet = 0;
 
-  public roundBet = 50;
+  public roundBet = 0;
+
+  public isProcessing = false;
 
   private cardStack = new CardStack();
 
   private _moneyWonOrLost = 0;
 
-  private _roundStatus = RoundStatus.RUNNING;
+  private _roundStatus = RoundStatus.STARTING;
 
   private _canPlayerDoubleDown = false;
 
   private _canPlayerSplit = false;
 
+  // eslint-disable-next-line @typescript-eslint/no-empty-function,class-methods-use-this
+  private updateUIFunction: () => void = () => {};
+
   constructor(player: HumanPlayer) {
     this.dealer = new Dealer();
     this.player = player;
     this.startGame();
+  }
+
+  public setUpdateUIFunction(updateUIFunction: () => void): void {
+    this.updateUIFunction = updateUIFunction;
+  }
+
+  private updateUI(codeToExecute: () => void): void {
+    this.updateUIFunction();
+    setTimeout(() => {
+      codeToExecute.call(this);
+      this.updateUIFunction();
+    }, DELAY);
+  }
+
+  public setProcessing(isProcessing: boolean): void {
+    this.isProcessing = isProcessing;
+    this.updateUIFunction();
   }
 
   private startGame(): void {
@@ -66,12 +93,17 @@ class BlackjackGame {
   }
 
   public startRound(): void {
-    this.player.hand = [];
-    this.player.splitHands = [];
-    this.player.finishedSplitHands = [];
-    this.dealer.hand = [];
+    this.player.startRound();
+    this.dealer.startRound();
+    this._roundStatus = RoundStatus.STARTING;
+    this.roundBet = this.initialRoundBet;
+  }
+
+  public runRound(): void {
+    this.initialRoundBet = this.roundBet;
+    this.player.money -= this.roundBet;
+    this.player.hand.bet = this.roundBet;
     this.lineOutCards();
-    this.playerBet = this.roundBet;
     this._moneyWonOrLost = 0;
     this._roundStatus = RoundStatus.RUNNING;
     this.checkForStartOptions();
@@ -92,19 +124,23 @@ class BlackjackGame {
 
   private checkForStartOptions(): void {
     if (this.player.cardPoints === BLACKJACK_NUMBER) {
-      this.endBlackjackRound();
+      this.updateUI(this.endBlackjackRound);
     } else {
-      this._canPlayerSplit = this.areFirstTwoPlayerCardsEqual();
-      this._canPlayerDoubleDown = true;
+      this._canPlayerSplit = this.checkCanPlayerSplit();
+      this._canPlayerDoubleDown = this.hasPlayerMoneyToDoubleBet();
     }
   }
 
+  private checkCanPlayerSplit(): boolean {
+    return this.areFirstTwoPlayerCardsEqual() && this.hasPlayerMoneyToDoubleBet();
+  }
+
   private areFirstTwoPlayerCardsEqual(): boolean {
-    return this.player.hand[0].number === this.player.hand[1].number;
+    return this.player.hand.cards[0].number === this.player.hand.cards[1].number;
   }
 
   public startNewRoundOrSwitchActiveHand(): void {
-    this._moneyWonOrLost = 0;
+    this.setProcessing(false);
     if (this._roundStatus === RoundStatus.LOST_SPLIT_HAND) {
       this._roundStatus = RoundStatus.RUNNING;
     } else {
@@ -115,50 +151,71 @@ class BlackjackGame {
   }
 
   public doubleDown(): void {
+    this.setProcessing(true);
     this._canPlayerDoubleDown = false;
     this._canPlayerSplit = false;
-    this.playerBet *= 2;
-    this.takeCardHumanPlayer();
-    if (this._roundStatus === RoundStatus.RUNNING) {
-      if (this.player.splitHands.length) {
-        this.takeNextSplitHand();
-      } else this.makeDealerMove();
-    }
+    this.player.money -= this.player.hand.bet;
+    this.roundBet += this.player.hand.bet;
+    this.player.hand.bet *= 2;
+    this.takeCardHumanPlayer(true);
+    this.updateUI(() => {
+      if (this._roundStatus === RoundStatus.RUNNING) {
+        if (this.player.splitHands.length) {
+          this.takeNextSplitHand();
+        } else {
+          this.makeDealerMove();
+        }
+      }
+    });
   }
 
   public split(): void {
     const areBothPlayerCardsAces = this.areBothPlayerCardsAces();
-    this.player.split(this.playerBet);
+    this.player.money -= this.player.hand.bet;
+    this.roundBet += this.player.hand.bet;
+    this.player.split();
     this.takeCardAfterSplit();
     if (areBothPlayerCardsAces) {
-      this.stand();
-      this.stand();
+      this.setProcessing(true);
+      this.updateUI(() => {
+        this.stand();
+        this.updateUI(() => {
+          this.stand();
+        });
+      });
     }
   }
 
   private areBothPlayerCardsAces(): boolean {
-    return this.player.hand[0].number === CardNumber.ACE
-        && this.player.hand[1].number === CardNumber.ACE;
+    return this.player.hand.cards[0].number === CardNumber.ACE
+        && this.player.hand.cards[1].number === CardNumber.ACE;
   }
 
-  public takeCardHumanPlayer(): void {
+  public takeCardHumanPlayer(playerHasDoubled = false): void {
     this._canPlayerDoubleDown = false;
     this._canPlayerSplit = false;
     this.takeCard(this.player);
     const cardValues = this.player.cardPoints;
     if (cardValues > BLACKJACK_NUMBER) {
+      this.setProcessing(true);
       if (this.player.splitHands.length || this.player.finishedSplitHands.length) {
-        this.lostSplitHand();
+        this.lostSplitHand(playerHasDoubled);
       } else {
         this.endLostRound(RoundStatus.PLAYER_TO_MUCH_POINTS);
       }
     }
   }
 
-  private lostSplitHand(): void {
-    this._roundStatus = RoundStatus.LOST_SPLIT_HAND;
-    if (this.player.splitHands.length || this.player.finishedSplitHands.filter((hand) => !hand.hastToMuchPoints).length) {
-      this.stand();
+  private lostSplitHand(playerHasDoubled = false): void {
+    if (this.player.splitHands.length) {
+      this.updateUI(() => {
+        this.stand();
+        this._roundStatus = RoundStatus.LOST_SPLIT_HAND;
+      });
+    } else if (this.player.finishedSplitHands.filter((hand) => !hand.hastToMuchPoints).length) {
+      if (!playerHasDoubled) {
+        this.updateUI(() => { this.stand(); });
+      }
     } else {
       this.endSplitRound();
     }
@@ -173,8 +230,9 @@ class BlackjackGame {
   }
 
   private takeNextSplitHand(): void {
-    this.playerBet = this.player.switchActiveHand(this.playerBet, this._moneyWonOrLost);
-    this._canPlayerDoubleDown = true;
+    this.setProcessing(false);
+    this.player.switchActiveHand();
+    this._canPlayerDoubleDown = this.hasPlayerMoneyToDoubleBet();
     this.takeCardAfterSplit();
   }
 
@@ -186,15 +244,18 @@ class BlackjackGame {
   public makeDealerMove(): void {
     this._canPlayerDoubleDown = false;
     this._canPlayerSplit = false;
-    this.dealer.hand[1].isConcealed = false;
+    this.dealer.hand.cards[1].isConcealed = false;
     this.takeCardDealer();
   }
 
   public takeCardDealer(): void {
+    this.setProcessing(true);
     const cardValues = this.dealer.cardPoints;
     if (cardValues <= THRESHOLD_DEALER_MUST_TAKE_CARD) {
-      this.takeCard(this.dealer);
-      this.takeCardDealer();
+      this.updateUI(() => {
+        this.takeCard(this.dealer);
+        this.takeCardDealer();
+      });
     } else {
       this.checkForWinner();
     }
@@ -218,39 +279,39 @@ class BlackjackGame {
 
   @checkForSplitEnding()
   private endLostRound(lostStatus: RoundStatus.PLAYER_TO_MUCH_POINTS | RoundStatus.LOST): void {
-    this._moneyWonOrLost = -this.playerBet;
+    this._moneyWonOrLost = 0;
     this.setNewPlayerMoney();
     this._roundStatus = lostStatus;
   }
 
   @checkForSplitEnding()
   private endWonRound(): void {
-    this._moneyWonOrLost = this.playerBet;
+    this._moneyWonOrLost = this.roundBet * 2;
     this.setNewPlayerMoney();
     this._roundStatus = RoundStatus.WON;
   }
 
   @checkForSplitEnding()
   private endTieRound(tieStatus: RoundStatus.TIE | RoundStatus.BLACKJACK_TIE = RoundStatus.TIE): void {
-    this._moneyWonOrLost = 0;
+    this._moneyWonOrLost = this.roundBet;
     this.setNewPlayerMoney();
     this._roundStatus = tieStatus;
   }
 
   private endBlackjackRound(): void {
-    this.dealer.hand[1].isConcealed = false;
+    this.dealer.hand.cards[1].isConcealed = false;
 
     if (this.hasDealerBlackjack()) {
       this.endTieRound(RoundStatus.BLACKJACK_TIE);
     } else {
-      this._moneyWonOrLost = BLACKJACK_BET_MULTIPLIER * this.playerBet;
+      this._moneyWonOrLost = BLACKJACK_BET_MULTIPLIER * this.roundBet;
       this.setNewPlayerMoney();
       this._roundStatus = RoundStatus.BLACKJACK;
     }
   }
 
   public endSplitRound(): void {
-    this.player.switchActiveHand(this.playerBet, this._moneyWonOrLost);
+    this.player.switchActiveHand();
     this.player.finishedSplitHands.forEach((hand) => this.checkSplitHandForWinner(hand));
     this._moneyWonOrLost = this.player.finishedSplitHands.map((hand) => hand.moneyWonOrLost)
       .reduce((sum, accumulator) => (sum + accumulator), 0);
@@ -258,37 +319,41 @@ class BlackjackGame {
     this._roundStatus = RoundStatus.END_SPLIT_ROUND;
   }
 
-  private checkSplitHandForWinner(hand: FinishedSplitHand): void {
+  private checkSplitHandForWinner(hand: FinishedHand): void {
     if (this.hasHandLost(hand)) {
       hand.status = RoundStatus.LOST;
-      hand.moneyWonOrLost = -hand.bet;
+      hand.moneyWonOrLost = 0;
     } else if (this.hasHandWon(hand)) {
       hand.status = RoundStatus.WON;
-      hand.moneyWonOrLost = hand.bet;
+      hand.moneyWonOrLost = hand.bet * 2;
     } else {
       hand.status = RoundStatus.TIE;
-      hand.moneyWonOrLost = 0;
+      hand.moneyWonOrLost = hand.bet;
     }
   }
 
-  private hasHandLost(hand: FinishedSplitHand): boolean {
+  private hasHandLost(hand: FinishedHand): boolean {
     return hand.hastToMuchPoints
         || this.hasDealerBlackjack()
         || (this.dealer.cardPoints <= BLACKJACK_NUMBER
             && this.dealer.cardPoints > hand.cardPoints);
   }
 
-  private hasHandWon(hand: FinishedSplitHand): boolean {
+  private hasHandWon(hand: FinishedHand): boolean {
     return this.dealer.cardPoints > BLACKJACK_NUMBER
         || (hand.cardPoints <= BLACKJACK_NUMBER && hand.cardPoints > this.dealer.cardPoints);
   }
 
   private hasDealerBlackjack(): boolean {
-    return this.dealer.hand.length === 2 && this.dealer.cardPoints === BLACKJACK_NUMBER;
+    return this.dealer.hand.cards.length === 2 && this.dealer.cardPoints === BLACKJACK_NUMBER;
   }
 
   private setNewPlayerMoney(): void {
     this.player.money += this._moneyWonOrLost;
+  }
+
+  private hasPlayerMoneyToDoubleBet(): boolean {
+    return this.player.money >= this.player.hand.bet;
   }
 
   public get roundStatus(): RoundStatus {

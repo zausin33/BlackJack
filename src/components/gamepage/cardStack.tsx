@@ -3,7 +3,7 @@ import { imageFolder } from "./card";
 
 function CardStack(): JSX.Element {
   const n = 10;
-  const array = Array(n).fill(null).map((_, i) => i + 1);
+  const array = Array(n).fill(null).map((_, i) => i);
   return (
     <div className="card-stack">
       {array.map((e) => (
@@ -12,7 +12,7 @@ function CardStack(): JSX.Element {
           alt="CardStack"
           className="card-stack-image"
           key={e}
-          id={e === 10 ? "first-stack-img" : ""}
+          id={e === 9 ? "first-stack-img" : ""}
         />
       ))}
     </div>

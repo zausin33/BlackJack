@@ -1,5 +1,6 @@
 import CardColor from "./CardColor";
 import CardNumber from "./CardNumber";
+import { Position } from "../../utils/domHelpers";
 
 class Card {
   public static VALUE_ROYAL_CARD = 10;
@@ -15,6 +16,10 @@ class Card {
   public readonly color: CardColor;
 
   public isConcealed = false;
+
+  public wasInSplitHand = false;
+
+  public position: Position;
 
   constructor(id: number, color: CardColor, number: CardNumber, isConcealed: boolean) {
     this.id = id;

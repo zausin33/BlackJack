@@ -1,8 +1,8 @@
-import React from "react";
+import React, { Fragment } from "react";
 import CenteredModal from "../ui/modal/centeredModal";
 import Button from "../ui/button";
 import RoundStatus from "../../model/RoundStatus";
-import { FinishedSplitHand } from "../../model/player/splitHandTypes";
+import { FinishedHand } from "../../model/player/splitHandTypes";
 import Money from "../ui/money";
 
 type roundResultModalProps = {
@@ -12,7 +12,7 @@ type roundResultModalProps = {
   cardValuesDealer: number;
   cardValuesPlayer: number;
   moneyLostOrWon: number;
-  finishedSplitHands: FinishedSplitHand[];
+  finishedSplitHands: FinishedHand[];
 }
 
 function RoundResultModal(props: roundResultModalProps): JSX.Element {
@@ -21,6 +21,7 @@ function RoundResultModal(props: roundResultModalProps): JSX.Element {
   } = props;
 
   const roundResults = {
+    [RoundStatus.STARTING]: "",
     [RoundStatus.WON]: "Gewonnen",
     [RoundStatus.LOST]: "Verloren",
     [RoundStatus.PLAYER_TO_MUCH_POINTS]: "Verloren",
@@ -35,7 +36,7 @@ function RoundResultModal(props: roundResultModalProps): JSX.Element {
   const playerHasToMuchPoints = (roundStatus === RoundStatus.PLAYER_TO_MUCH_POINTS
       || roundStatus === RoundStatus.LOST_SPLIT_HAND);
 
-  const renderResultHandHasToMuchPoints = (hand: FinishedSplitHand): JSX.Element => (
+  const renderResultHandHasToMuchPoints = (hand: FinishedHand): JSX.Element => (
     <div>
       Du hast zu viele Augen:
       <span className="result-card-number">{hand.cardPoints}</span>
@@ -44,7 +45,7 @@ function RoundResultModal(props: roundResultModalProps): JSX.Element {
     </div>
   );
 
-  const renderNormalHandResult = (hand: FinishedSplitHand): JSX.Element => (
+  const renderNormalHandResult = (hand: FinishedHand): JSX.Element => (
     <div>
       Du hast
       <span className="result-card-number">{hand.cardPoints}</span>
@@ -54,7 +55,7 @@ function RoundResultModal(props: roundResultModalProps): JSX.Element {
     </div>
   );
 
-  const renderResultFinishedSplitHand = (hand: FinishedSplitHand): JSX.Element => {
+  const renderResultFinishedSplitHand = (hand: FinishedHand): JSX.Element => {
     if (hand.hastToMuchPoints) return renderResultHandHasToMuchPoints(hand);
     return renderNormalHandResult(hand);
   };
@@ -66,7 +67,8 @@ function RoundResultModal(props: roundResultModalProps): JSX.Element {
         <span className="result-card-number">{cardValuesDealer}</span>
         Augen
       </div>
-      {finishedSplitHands.map((hand) => renderResultFinishedSplitHand(hand))}
+      {/* eslint-disable-next-line react/no-array-index-key */}
+      {finishedSplitHands.map((hand, idx) => (<Fragment key={idx}>{renderResultFinishedSplitHand(hand)}</Fragment>))}
       <div />
       <div>
         {`Insgesamt ${moneyLostOrWon >= 0 ? "gewonnen:" : "verloren:"}`}

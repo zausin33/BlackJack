@@ -3,7 +3,7 @@ import Card from "./card";
 import CardModel from "../../model/card/Card";
 import Player from "../../model/player/Player";
 import RoundStatus from "../../model/RoundStatus";
-import Money from "../ui/money";
+import MoneyArea from "../ui/moneyArea";
 
 type CardDeckProps = {
     player: Player;
@@ -11,32 +11,28 @@ type CardDeckProps = {
 }
 
 function CardDeck({ player, roundStatus }: CardDeckProps): JSX.Element {
-  const cards: CardModel[] = player.hand;
-  const { finishedSplitHands } = player;
+  const { cards } = player.hand;
 
   return (
     <>
-      {player.splitHands.map(({ card, bet }, idx) => (
+      {player.splitHands.map(({ cards: [card], bet }) => (
         <div className="split-hand-card-deck" key={card.id}>
-          <Card card={card} isFromStack={false} playerName={player.name} />
-          <div className="card-deck-bet">
-            <Money amount={bet} />
-          </div>
+          <Card card={card} isNotFromStack />
+          <MoneyArea money={bet} className="card-deck-bet" doRenderWithDelay />
         </div>
       ))}
-      <div className="card-deck" id={`card-deck-${player.name}`}>
+      <div className="card-deck">
         {cards.map((card: CardModel, idx) => (
           <Card
             card={card}
             key={card.id}
-            playerName={player.name}
           />
         ))}
         <div className="card-deck-points">
           {player.cardPoints}
         </div>
       </div>
-      {finishedSplitHands.map(({ cards: finishedSplitCards, bet }, idxHands) => (
+      {player.finishedSplitHands.map(({ cards: finishedSplitCards, bet }, idxHands) => (
         // eslint-disable-next-line react/no-array-index-key
         <Fragment key={finishedSplitCards.map((card) => card.id.toString()).reduce((id, ids) => id + ids, "")}>
           {(roundStatus !== RoundStatus.END_SPLIT_ROUND || idxHands !== 0) && (
@@ -46,13 +42,10 @@ function CardDeck({ player, roundStatus }: CardDeckProps): JSX.Element {
                   card={card}
                   key={card.id}
                   style={idx !== 0 ? { marginLeft: "-90px" } : {}}
-                  isFromStack={false}
-                  playerName={player.name}
+                  isNotFromStack
                 />
               ))}
-              <div className="card-deck-bet">
-                <Money amount={bet} />
-              </div>
+              <MoneyArea money={bet} className="card-deck-bet" doRenderWithDelay />
             </div>
           )}
         </Fragment>

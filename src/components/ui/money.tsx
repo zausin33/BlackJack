@@ -7,7 +7,7 @@ type MoneyProps = {
 
 function Money({ amount, className = "" }: MoneyProps): JSX.Element {
   return (
-    <span className={className}>{`${amount.toFixed(2)} €`}</span>
+    <span className={className}>{`${amount} €`}</span>
   );
 }
 

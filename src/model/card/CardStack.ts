@@ -8,14 +8,15 @@ class CardStack {
   public initialize(): void {
     this.fillCarsStack();
     this.shuffle();
+    this.cards.unshift(new Card(100001, CardColor.DIAMONDS, CardNumber.JACK, true));
     this.cards.unshift(new Card(100001, CardColor.DIAMONDS, CardNumber.EIGHT, true));
     this.cards.unshift(new Card(100002, CardColor.DIAMONDS, CardNumber.SEVEN, true));
-    this.cards.unshift(new Card(100003, CardColor.DIAMONDS, CardNumber.NINE, true));
+    this.cards.unshift(new Card(100003, CardColor.DIAMONDS, CardNumber.EIGHT, true));
     this.cards.unshift(new Card(100004, CardColor.DIAMONDS, CardNumber.SEVEN, true));
-    this.cards.unshift(new Card(100005, CardColor.DIAMONDS, CardNumber.SEVEN, true));
-    this.cards.unshift(new Card(100006, CardColor.CLUBS, CardNumber.SEVEN, true));
+    this.cards.unshift(new Card(100005, CardColor.DIAMONDS, CardNumber.KING, true));
+    this.cards.unshift(new Card(100006, CardColor.CLUBS, CardNumber.TWO, true));
     this.cards.unshift(new Card(100007, CardColor.DIAMONDS, CardNumber.SEVEN, true));
-    this.cards.unshift(new Card(100008, CardColor.HEARTS, CardNumber.SEVEN, true));
+    this.cards.unshift(new Card(100008, CardColor.HEARTS, CardNumber.TWO, true));
     this.cards.unshift(new Card(100009, CardColor.DIAMONDS, CardNumber.SEVEN, true));
   }
 

@@ -1,12 +1,12 @@
 import Card from "../card/Card";
 import RoundStatus from "../RoundStatus";
 
-export type SplitHand = {
-    card: Card;
+export type Hand = {
+    cards: Card[];
     bet: number;
 }
 
-export type FinishedSplitHand = {
+export type FinishedHand = {
     cards: Card[];
     cardPoints: number;
     hastToMuchPoints: boolean;

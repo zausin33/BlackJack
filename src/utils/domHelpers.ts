@@ -1,4 +1,10 @@
 import React from "react";
+import Card from "../model/card/Card";
+
+export type Position = {
+  centerX: number;
+  centerY: number;
+} | undefined
 
 const evalRect = (rect: DOMRect): { centerX: number, centerY: number } => {
   const centerX = rect.left + rect.width * 0.5;
@@ -6,19 +12,39 @@ const evalRect = (rect: DOMRect): { centerX: number, centerY: number } => {
   return { centerX, centerY };
 };
 
-const setTranslateForAnimation = (sourceId: string, targetRef: React.RefObject<HTMLElement>): void => {
-  const cardStack = document.getElementById(sourceId);
-  if (!targetRef.current || !cardStack) return;
+export const setTranslateForAnimation = (
+  sourceId: string,
+  targetRef: React.RefObject<HTMLElement>,
+  card: Card,
+): void => {
+  const sourceElement = document.getElementById(sourceId);
+  if (!targetRef.current || !sourceElement) return;
   const target = targetRef.current;
-  const rectCardStack = cardStack.getBoundingClientRect();
+  const rectSourceElement = sourceElement.getBoundingClientRect();
   const rectTarget = target.getBoundingClientRect();
-  const cardStackCenter = evalRect(rectCardStack);
+  const sourceElementCenter = evalRect(rectSourceElement);
   const targetCenter = evalRect(rectTarget);
+  card.position = { centerX: targetCenter.centerX, centerY: targetCenter.centerY };
 
-  const translateX = cardStackCenter.centerX - targetCenter.centerX;
-  const translateY = cardStackCenter.centerY - targetCenter.centerY;
+  const translateX = sourceElementCenter.centerX - targetCenter.centerX;
+  const translateY = sourceElementCenter.centerY - targetCenter.centerY;
 
   target.style.transform = `translate(${translateX}px, ${translateY}px) `;
 };
 
-export default setTranslateForAnimation;
+export const setTranslateForAnimationWithSrcPos = (
+  sourcePosition: Position,
+  targetRef: React.RefObject<HTMLElement>,
+  card: Card,
+): void => {
+  if (!targetRef.current || !sourcePosition) return;
+  const target = targetRef.current;
+  const rectTarget = target.getBoundingClientRect();
+  const targetCenter = evalRect(rectTarget);
+  card.position = { centerX: targetCenter.centerX, centerY: targetCenter.centerY };
+
+  const translateX = sourcePosition.centerX - targetCenter.centerX;
+  const translateY = sourcePosition.centerY - targetCenter.centerY;
+
+  target.style.transform = `translate(${translateX}px, ${translateY}px) `;
+};

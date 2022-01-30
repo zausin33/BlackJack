@@ -1,4 +1,20 @@
+/**
+ * The round status describes the current state of the game.
+ *
+ *                                  STARTING<------------------------------------------------------------
+ *                                     |                                         |                      |
+ *                                  RUNNING-------------------------------->LOST_SPLIT_HAND             |
+ *                                    |                                                                 | New Round
+ *            ------------------------------------------------------------------------                  |
+ *           |                  |       |     |       |               |              |                  |
+ *   PLAYER_TO_MUCH_POINTS     WON    LOST   TIE   BLACKJACK   BLACKJACK_TIE   END_SPLIT_ROUND          |
+ *          |                  |       |     |       |               |              |                   |
+ *          ---------------------------------------------------------------------------------------------
+ *
+ */
+
 enum RoundStatus {
+    STARTING = "STARTING",
     RUNNING = "RUNNING",
     PLAYER_TO_MUCH_POINTS = "PLAYER_TO_MUCH_POINTS",
     WON = "WON",
