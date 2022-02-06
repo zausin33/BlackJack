@@ -3,3 +3,4 @@ export const BLACKJACK_BET_MULTIPLIER = 2.5;
 export const THRESHOLD_DEALER_MUST_TAKE_CARD = 16;
 
 export const DELAY = 1000;
+export const SHOW_ROUND_RESULT_MODEL_DELAY = 900;

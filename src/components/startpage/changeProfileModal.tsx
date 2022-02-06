@@ -2,7 +2,7 @@ import React from "react";
 import CenteredModal from "../ui/modal/centeredModal";
 import Button from "../ui/button";
 import ScrollingTable from "../ui/table/ScrollingTable";
-import HumanPlayer from "../../model/player/HumanPlayer";
+import HumanPlayer from "../../model/player/humanPlayer";
 
 type ChangeProfileModalProps = {
   show: boolean;

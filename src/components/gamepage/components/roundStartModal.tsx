@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
-import CenteredModal from "../ui/modal/centeredModal";
-import Button from "../ui/button";
-import ChipButton from "../ui/chipButton";
-import { availableChips, chipsFolder } from "../../utils/chipHelpers";
-import Money from "../ui/money";
+import CenteredModal from "../../ui/modal/centeredModal";
+import Button from "../../ui/button";
+import ChipButton from "../../ui/chipButton";
+import { availableChips, chipsFolder } from "../../../utils/chipHelpers";
+import Money from "../../ui/money";
+import { placeElementsInCircle } from "../../../utils/domHelpers";
 
 type roundStartModalProps = {
   show: boolean;
@@ -41,16 +42,7 @@ function RoundStartModal(props: roundStartModalProps): JSX.Element {
   };
 
   useEffect(() => {
-    document.querySelectorAll(".circle-graph").forEach((circleGraph) => {
-      const circles: NodeListOf<HTMLElement> = circleGraph.querySelectorAll(".circle");
-      let angle = 360 - 90; const
-        dangle = 360 / circles.length;
-      for (let i = 0; i < circles.length; i += 1) {
-        const circle = circles[i];
-        angle += dangle;
-        circle.style.transform = `rotate(${angle}deg) translate(${circleGraph.clientWidth / 2}px) rotate(-${angle}deg)`;
-      }
-    });
+    placeElementsInCircle(".circle-graph", ".circle");
   });
 
   useEffect(() => {

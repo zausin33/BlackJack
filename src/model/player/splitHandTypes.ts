@@ -1,5 +1,5 @@
-import Card from "../card/Card";
-import RoundStatus from "../RoundStatus";
+import Card from "../card/card";
+import RoundStatus from "../roundStatus";
 
 export type Hand = {
     cards: Card[];

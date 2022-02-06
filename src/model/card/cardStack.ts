@@ -1,0 +1,39 @@
+import Card from "./card";
+import CardColor from "./cardColor";
+import CardNumber from "./cardNumber";
+
+class CardStack {
+  private cards: Card[] = [];
+
+  public initialize(): void {
+    this.fillCarsStack();
+    this.shuffle();
+  }
+
+  public shift(): Card {
+    return this.cards.shift()!;
+  }
+
+  private fillCarsStack(): void {
+    let idCounter = 0;
+    for (let i = 0; i < 6; i += 1) {
+      // eslint-disable-next-line no-loop-func
+      Object.values(CardColor).forEach((cardColor) => {
+        Object.values(CardNumber).forEach((cardNumber) => {
+          const card = new Card(idCounter, cardColor as CardColor, cardNumber as CardNumber, true);
+          this.cards.push(card);
+          idCounter += 1;
+        });
+      });
+    }
+  }
+
+  private shuffle(): void {
+    for (let i = this.cards.length - 1; i > 0; i -= 1) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [this.cards[i], this.cards[j]] = [this.cards[j], this.cards[i]];
+    }
+  }
+}
+
+export default CardStack;

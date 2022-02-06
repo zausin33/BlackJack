@@ -1,5 +1,5 @@
-import CardColor from "./CardColor";
-import CardNumber from "./CardNumber";
+import CardColor from "./cardColor";
+import CardNumber from "./cardNumber";
 import { Position } from "../../utils/domHelpers";
 
 class Card {

@@ -1,5 +1,5 @@
 import React from "react";
-import Card from "../model/card/Card";
+import Card from "../model/card/card";
 
 export type Position = {
   centerX: number;
@@ -47,4 +47,17 @@ export const setTranslateForAnimationWithSrcPos = (
   const translateY = sourcePosition.centerY - targetCenter.centerY;
 
   target.style.transform = `translate(${translateX}px, ${translateY}px) `;
+};
+
+export const placeElementsInCircle = (circleSelector: string, elementSelector: string): void => {
+  document.querySelectorAll(circleSelector).forEach((circleGraph) => {
+    const circles: NodeListOf<HTMLElement> = circleGraph.querySelectorAll(elementSelector);
+    let angle = 360 - 90; const
+      dangle = 360 / circles.length;
+    for (let i = 0; i < circles.length; i += 1) {
+      const circle = circles[i];
+      angle += dangle;
+      circle.style.transform = `rotate(${angle}deg) translate(${circleGraph.clientWidth / 2}px) rotate(-${angle}deg)`;
+    }
+  });
 };

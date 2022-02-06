@@ -2,8 +2,8 @@ import React from "react";
 import NewProfileModal from "../../components/startpage/newProfileModal";
 import ButtonArea from "../../components/startpage/buttonArea";
 import ChangeProfileModal from "../../components/startpage/changeProfileModal";
-import { useProfile } from "../../App";
-import HumanPlayer from "../../model/player/HumanPlayer";
+import { useProfile } from "../../app";
+import HumanPlayer from "../../model/player/humanPlayer";
 
 function Startpage(): JSX.Element {
   const [profileList, setProfileList] = useProfile();
@@ -13,7 +13,9 @@ function Startpage(): JSX.Element {
   const [isNewProfileModalShown, setIsNewProfileModalShown] = React.useState(!someProfileExists);
 
   const setAllProfilesInactive = (): void => {
-    profileList.forEach((profile) => profile.isActive = false);
+    profileList.forEach((profile) => {
+      profile.isActive = false;
+    });
   };
 
   const onProfileCreate = (newProfile: HumanPlayer): void => {

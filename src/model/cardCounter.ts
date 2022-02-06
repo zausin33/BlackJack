@@ -1,5 +1,5 @@
-import Card from "./card/Card";
-import CardNumber from "./card/CardNumber";
+import Card from "./card/card";
+import CardNumber from "./card/cardNumber";
 import { BLACKJACK_NUMBER } from "./blackjackGameConstants";
 
 const calculateOptimalAcePoints = (value: number, numberAces: number): number => {

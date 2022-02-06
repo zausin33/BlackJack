@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from "react";
-import CardModel from "../../model/card/Card";
-import usePrevious from "../../utils/hooks/usePrevious";
-import { setTranslateForAnimation, setTranslateForAnimationWithSrcPos } from "../../utils/domHelpers";
+import CardModel from "../../../model/card/card";
+import usePrevious from "../../../utils/hooks/usePrevious";
+import { setTranslateForAnimation, setTranslateForAnimationWithSrcPos } from "../../../utils/domHelpers";
 
 type CardProps = {
     card: CardModel;
@@ -37,7 +37,7 @@ function Card({
   }, [isConcealed]);
 
   return (
-    <div className="game-card" style={style} ref={cardRef}>
+    <div className="game-card" style={style} ref={cardRef} data-testid={card.imageName}>
       <img
         src={imageFolder + card.imageName}
         alt="Card"

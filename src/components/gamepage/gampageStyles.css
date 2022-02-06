@@ -16,82 +16,88 @@
 }
 
 .side-area {
-width: 200px;
+    width: 200px;
 }
 
 .card-deck {
-display: flex;
-justify-content: center;
-width: 100%;
-position: relative;
-height: 193px;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    position: relative;
+    height: 193px;
 }
 
 .card-deck-points {
-position: absolute;
-bottom: 0;
-right: 50px;
-font-size: 50px;
+    position: absolute;
+    bottom: 0;
+    right: 50px;
+    font-size: 50px;
 }
 
 .card-deck-bet {
-position: absolute;
-bottom: 60px;
-z-index: 2;
+    position: absolute;
+    bottom: 60px;
+    z-index: 2;
 }
 
 .split-hand-card-deck {
-display: flex;
-justify-content: center;
-position: relative;
+    display: flex;
+    justify-content: center;
+    position: relative;
 }
 
 .game-card {
-padding: 0 5px;
-width: 134px;
-height: 193px;
-z-index: 2;
-animation: fly-in 1s forwards;
+    padding: 0 5px;
+    width: 134px;
+    height: 193px;
+    z-index: 2;
+    animation: fly-in 1s forwards;
 }
 
 @keyframes fly-in {
-to {transform: translate(0px, 0px);}
+    to {
+        transform: translate(0px, 0px);
+    }
 }
 
 .game-card-image-uncover-animation {
-animation: uncover 1s forwards;
+    animation: uncover 1s forwards;
 }
 
 @keyframes uncover {
-from {transform: rotate3d(0, 1, 0, 90deg);}
-to {transform: rotate3d(0, 1, 0, 0deg);}
+    from {
+        transform: rotate3d(0, 1, 0, 90deg);
+    }
+    to {
+        transform: rotate3d(0, 1, 0, 0deg);
+    }
 }
 
 .money-area {
-padding: 30px 50px;
+    padding: 30px 50px;
 }
 
 .dealer-area, .middle-area, .player-area {
-display: flex;
-flex-direction: row;
+    display: flex;
+    flex-direction: row;
 }
 
 .middle-area {
-position: absolute;
-width: 100%;
-height: 100%;
-top: 0;
-left: 0;
-align-items: center;
-justify-content: center;
-z-index: 1;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
 }
 
 .player-area {
-position: absolute;
-width: 100%;
-bottom: 20px;
-left: 0;
+    position: absolute;
+    width: 100%;
+    bottom: 20px;
+    left: 0;
 }
 
 .game-board-button-area {
@@ -99,99 +105,100 @@ left: 0;
 }
 
 .money-area-wrapper {
-position: relative;
+    position: relative;
 }
 
 .bet-money-area, .player-money-area {
-position: absolute;
-top: 0;
+    position: absolute;
+    top: 0;
 }
 
 .bet-money-area {
-left: 15%;
-top: 33%;
+    left: 15%;
+    top: 33%;
 }
 
 .player-money-area {
-right: 20px;
-top: -90px;
+    right: 20px;
+    top: -90px;
 }
 
 .player-symbol {
-height: 80px;
-display: flex;
-justify-content: center;
+    height: 80px;
+    display: flex;
+    justify-content: center;
 }
 
 .player-symbol-wrapper {
-position: relative;
+    position: relative;
 }
 
 .player-symbol-name {
-position: absolute;
-right: 0;
-bottom: 0;
-margin: 0 auto;
-width: 100%;
-text-align: center;
-font-family: var(--font-family-sans-serif);
-color: white;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    margin: 0 auto;
+    width: 100%;
+    text-align: center;
+    font-family: var(--font-family-sans-serif);
+    color: white;
 }
 
 .player-symbol-icon {
-color: #00000073;
+    color: #00000073;
 }
 
 .result-card-number {
-padding: 10px;
-font-weight: 700;
+    padding: 10px;
+    font-weight: 700;
+    letter-spacing: 2px;
 }
 
 .card-stack-area {
-padding: 20px;
-margin-top: -70px;
+    padding: 20px;
+    margin-top: -70px;
 }
 
 .card-stack {
-min-height: 193px;
-padding-bottom: 15px;
+    min-height: 193px;
+    padding-bottom: 15px;
 }
 
 .card-stack-image {
-margin-right: -126px;
-width: 124px;
-height: 195px;
+    margin-right: -126px;
+    width: 124px;
+    height: 195px;
 }
 
 .chip-image {
-margin: 0 1px;
+    margin: 0 1px;
 }
 
 .bet-configuration {
-display: flex;
-flex-direction: column;
-align-items: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .rating-btn {
-border: none;
-background: none;
+    border: none;
+    background: none;
 }
 
 .bet-multiplier {
-font-family: var(--font-family-sans-serif);
-color: black;
-font-size: 20px;
-font-weight: 600;
+    font-family: var(--font-family-sans-serif);
+    color: black;
+    font-size: 20px;
+    font-weight: 600;
 }
 
 .chip-button {
-background: transparent;
-border: none;
+    background: transparent;
+    border: none;
 }
 
 .chip-button-image:hover {
-filter: brightness(1.5);
+    filter: brightness(1.5);
 }
 
 .chip-button-image:active {
@@ -199,38 +206,40 @@ filter: brightness(1.5);
 }
 
 .chip-button-image-disabled {
-filter: brightness(0.5)!important;
+    filter: brightness(0.5) !important;
 }
 
 .circle-wrapper {
-display: flex;
-flex-direction: column;
-align-content: center;
-width: 100%;
-align-items: center;
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    width: 100%;
+    align-items: center;
 }
 
 .circle-graph {
-position: relative;
-width: 250px;
-height: 250px;
-margin: calc(100px / 2 + 0px);
+    position: relative;
+    width: 250px;
+    height: 250px;
+    margin: calc(100px / 2 + 0px);
 }
 
 .circle-graph:before {
-content: "";
-position: absolute;
-top: 0; left: 0;
-width: calc( 100% - 2px * 2);
-height: calc( 100% - 2px * 2 );
-border-radius: 50%;
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: calc(100% - 2px * 2);
+    height: calc(100% - 2px * 2);
+    border-radius: 50%;
 }
 
 .circle-graph .circle {
-position: absolute;
-top: 50%; left: 50%;
-width: 100px;
-height: 100px;
-margin: calc( -100px / 2 );
-border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100px;
+    height: 100px;
+    margin: calc(-100px / 2);
+    border-radius: 50%;
 }

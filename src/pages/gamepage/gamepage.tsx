@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import GameBoard from "../../components/gamepage/gameBoard";
-import PlayerSymbol from "../../components/gamepage/playerSymbol";
-import { useProfile } from "../../App";
+import PlayerSymbol from "../../components/gamepage/components/playerSymbol";
+import { useProfile } from "../../app";
 
 function GamePage(): JSX.Element {
   const [profileList, setProfileList] = useProfile();

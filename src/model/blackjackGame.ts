@@ -1,44 +1,17 @@
-import CardStack from "./card/CardStack";
-import HumanPlayer from "./player/HumanPlayer";
-import Dealer from "./player/Dealer";
-import Player from "./player/Player";
+import CardStack from "./card/cardStack";
+import HumanPlayer from "./player/humanPlayer";
+import Dealer from "./player/dealer";
+import Player from "./player/player";
 import {
   BLACKJACK_BET_MULTIPLIER,
   BLACKJACK_NUMBER,
   DELAY,
   THRESHOLD_DEALER_MUST_TAKE_CARD,
 } from "./blackjackGameConstants";
-import RoundStatus from "./RoundStatus";
+import RoundStatus from "./roundStatus";
 import { FinishedHand } from "./player/splitHandTypes";
-import CardNumber from "./card/CardNumber";
-
-const checkForSplitEnding = () => (
-  // eslint-disable-next-line no-use-before-define
-  target: BlackjackGame,
-  memberName: string,
-  propertyDescriptor: PropertyDescriptor,
-) => ({
-  get() {
-    const wrapperFn = (...args: any[]): void => {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      if (this.player.finishedSplitHands.length && !this.player.splitHands.length) {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        this.endSplitRound();
-      } else {
-        propertyDescriptor.value.apply(this, args);
-      }
-    };
-
-    Object.defineProperty(this, memberName, {
-      value: wrapperFn,
-      configurable: true,
-      writable: true,
-    });
-    return wrapperFn;
-  },
-});
+import CardNumber from "./card/cardNumber";
+import { checkForSplitEnding } from "./decorators";
 
 class BlackjackGame {
   public readonly player: HumanPlayer;
@@ -74,10 +47,11 @@ class BlackjackGame {
     this.updateUIFunction = updateUIFunction;
   }
 
-  private updateUI(codeToExecute: () => void): void {
+  private updateUI(codeToExecuteWithDelay: (() => void) | undefined = undefined): void {
     this.updateUIFunction();
+    if (codeToExecuteWithDelay === undefined) return;
     setTimeout(() => {
-      codeToExecute.call(this);
+      codeToExecuteWithDelay?.call(this);
       this.updateUIFunction();
     }, DELAY);
   }
@@ -107,6 +81,7 @@ class BlackjackGame {
     this._moneyWonOrLost = 0;
     this._roundStatus = RoundStatus.RUNNING;
     this.checkForStartOptions();
+    this.updateUI();
   }
 
   private lineOutCards(): void {
@@ -148,6 +123,7 @@ class BlackjackGame {
       this.dealer.increaseNumberPlayedGames();
       this.startRound();
     }
+    this.updateUI();
   }
 
   public doubleDown(): void {
@@ -184,6 +160,7 @@ class BlackjackGame {
         });
       });
     }
+    this.updateUI();
   }
 
   private areBothPlayerCardsAces(): boolean {
@@ -204,6 +181,7 @@ class BlackjackGame {
         this.endLostRound(RoundStatus.PLAYER_TO_MUCH_POINTS);
       }
     }
+    this.updateUI();
   }
 
   private lostSplitHand(playerHasDoubled = false): void {
@@ -227,6 +205,7 @@ class BlackjackGame {
     } else {
       this.makeDealerMove();
     }
+    this.updateUI();
   }
 
   private takeNextSplitHand(): void {

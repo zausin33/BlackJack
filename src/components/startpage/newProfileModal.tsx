@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import CenteredModal from "../ui/modal/centeredModal";
 import Button from "../ui/button";
-import HumanPlayer from "../../model/player/HumanPlayer";
+import HumanPlayer from "../../model/player/humanPlayer";
 import Money from "../ui/money";
 
 type NewProfileModalProps = {

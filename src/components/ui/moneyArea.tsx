@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import Money from "./money";
 import { DELAY } from "../../model/blackjackGameConstants";
 import calculateChips, { chipsFolder } from "../../utils/chipHelpers";
 
@@ -38,7 +37,7 @@ function MoneyArea({
               width="50"
               height="50"
                   /* eslint-disable-next-line react/no-array-index-key */
-              key={`${idx}_${chip}`}
+              key={`${idx}_${i}_${chip}`}
               style={i > 0 ? { marginLeft: "-33px" } : {}}
             />
           ))

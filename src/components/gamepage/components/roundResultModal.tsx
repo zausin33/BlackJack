@@ -1,9 +1,9 @@
 import React, { Fragment } from "react";
-import CenteredModal from "../ui/modal/centeredModal";
-import Button from "../ui/button";
-import RoundStatus from "../../model/RoundStatus";
-import { FinishedHand } from "../../model/player/splitHandTypes";
-import Money from "../ui/money";
+import CenteredModal from "../../ui/modal/centeredModal";
+import Button from "../../ui/button";
+import RoundStatus from "../../../model/roundStatus";
+import { FinishedHand } from "../../../model/player/splitHandTypes";
+import Money from "../../ui/money";
 
 type roundResultModalProps = {
   show: boolean;

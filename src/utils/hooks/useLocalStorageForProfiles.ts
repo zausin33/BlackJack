@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import HumanPlayer from "../../model/player/HumanPlayer";
+import HumanPlayer from "../../model/player/humanPlayer";
 
 const useLocalStorageForProfiles = (key: string, initialValue: HumanPlayer[] | null = null): [HumanPlayer[], (state: HumanPlayer[]) => void] => {
   const valueString = localStorage.getItem(key);

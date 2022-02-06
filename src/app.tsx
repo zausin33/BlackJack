@@ -1,7 +1,7 @@
 import { Outlet, useOutletContext } from "react-router-dom";
 import React from "react";
 import Header from "./components/layout/header";
-import HumanPlayer from "./model/player/HumanPlayer";
+import HumanPlayer from "./model/player/humanPlayer";
 import useLocalStorageForProfiles from "./utils/hooks/useLocalStorageForProfiles";
 
 export default function App(): JSX.Element {

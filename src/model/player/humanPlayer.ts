@@ -1,4 +1,4 @@
-import Player from "./Player";
+import Player from "./player";
 
 class HumanPlayer extends Player {
   public static readonly START_MONEY = 2000;

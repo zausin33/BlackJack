@@ -1,4 +1,4 @@
-import Player from "./Player";
+import Player from "./player";
 
 class Dealer extends Player {
   constructor() {

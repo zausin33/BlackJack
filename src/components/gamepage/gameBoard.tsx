@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from "react";
 import "./gampageStyles.css";
-import CardDeck from "./cardDeck";
-import ButtonArea from "./buttonArea";
-import HumanPlayer from "../../model/player/HumanPlayer";
-import BlackjackGame from "../../model/BlackjackGame";
-import RoundResultModal from "./roundResultModal";
-import RoundStatus from "../../model/RoundStatus";
-import CardStack from "./cardStack";
+import CardDeck from "./components/cardDeck/cardDeck";
+import ButtonArea from "./components/buttonArea";
+import HumanPlayer from "../../model/player/humanPlayer";
+import BlackjackGame from "../../model/blackjackGame";
+import RoundResultModal from "./components/roundResultModal";
+import RoundStatus from "../../model/roundStatus";
+import CardStack from "./components/cardStack";
 import MoneyArea from "../ui/moneyArea";
-import SideArea from "./sideArea";
-import RoundStartModal from "./roundStartModal";
+import SideArea from "./components/sideArea";
+import RoundStartModal from "./components/roundStartModal";
+import { SHOW_ROUND_RESULT_MODEL_DELAY } from "../../model/blackjackGameConstants";
 
 type GameBoardProps = {
     player: HumanPlayer;
@@ -18,7 +19,6 @@ type GameBoardProps = {
 }
 
 function GameBoard({ player, profileList, setProfileList }: GameBoardProps): JSX.Element {
-  // eslint-disable-next-line no-use-before-define
   const [blackjackGames, setBlackjackGame] = useState(() => [new BlackjackGame(player)]);
   const [roundHadEnded, setRoundHadEnded] = useState(false);
   const blackjackGame = blackjackGames[0];
@@ -32,7 +32,7 @@ function GameBoard({ player, profileList, setProfileList }: GameBoardProps): JSX
     } else {
       setTimeout(() => {
         setRoundHadEnded(true);
-      }, 900);
+      }, SHOW_ROUND_RESULT_MODEL_DELAY);
     }
   }, [roundStatus]);
 
@@ -45,45 +45,15 @@ function GameBoard({ player, profileList, setProfileList }: GameBoardProps): JSX
     blackjackGame.setUpdateUIFunction(updateGameBoard);
   }, []);
 
-  const onHumanTakesCard = (): void => {
-    blackjackGame.takeCardHumanPlayer();
-    updateGameBoard();
-  };
-
-  const onStand = (): void => {
-    blackjackGame.stand();
-    updateGameBoard();
-  };
-
-  const onStartNewRound = (): void => {
-    blackjackGame.startNewRoundOrSwitchActiveHand();
-    updateGameBoard();
-  };
-
-  const onDoubleBet = (): void => {
-    blackjackGame.doubleDown();
-    updateGameBoard();
-  };
-
-  const onPlayerSplit = (): void => {
-    blackjackGame.split();
-    updateGameBoard();
-  };
-
   const onUpdateRoundBet = (newRoundBet: number): void => {
     blackjackGame.roundBet = newRoundBet;
-    updateGameBoard();
-  };
-
-  const onConfirmRoundBet = (): void => {
-    blackjackGame.runRound();
     updateGameBoard();
   };
 
   return (
     <div className="game-board-wrapper">
       <div className="game-board">
-        <div className="dealer-area">
+        <div className="dealer-area" data-testid="dealer-area">
           <CardDeck player={blackjackGame.dealer} roundStatus={blackjackGame.roundStatus} />
         </div>
         <div className="middle-area">
@@ -91,35 +61,34 @@ function GameBoard({ player, profileList, setProfileList }: GameBoardProps): JSX
             <MoneyArea money={blackjackGame.player.hand.bet} className="money-area" />
           </div>
           <ButtonArea
-            onHumanTakesCard={onHumanTakesCard}
-            onStand={onStand}
+            onHumanTakesCard={() => blackjackGame.takeCardHumanPlayer()}
+            onStand={() => blackjackGame.stand()}
             canPlayerDouble={blackjackGame.canPlayerDoubleDown}
-            onDoubleBet={onDoubleBet}
+            onDoubleBet={() => blackjackGame.doubleDown()}
             canPlayerSplit={blackjackGame.canPlayerSplit}
-            onPlayerSplit={onPlayerSplit}
+            onPlayerSplit={() => blackjackGame.split()}
             disabled={blackjackGame.roundStatus !== RoundStatus.RUNNING || blackjackGame.isProcessing}
           />
         </div>
         <div className="card-stack-area">
           <CardStack />
         </div>
-        <div className="player-area">
+        <div className="player-area" data-testid="player-area">
           <CardDeck player={blackjackGame.player} roundStatus={blackjackGame.roundStatus} />
           <div className="player-money-area">
-            {/* TODO player money < round bet */}
             <MoneyArea money={blackjackGame.player.money} className="money-area" />
           </div>
         </div>
         <RoundStartModal
           show={blackjackGame.roundStatus === RoundStatus.STARTING}
-          onConfirmRoundBet={onConfirmRoundBet}
+          onConfirmRoundBet={() => blackjackGame.runRound()}
           roundBet={blackjackGame.roundBet}
           onUpdateRoundBet={onUpdateRoundBet}
           playerMoney={blackjackGame.player.money}
         />
         <RoundResultModal
           show={roundHadEnded}
-          onHide={onStartNewRound}
+          onHide={() => blackjackGame.startNewRoundOrSwitchActiveHand()}
           roundStatus={blackjackGame.roundStatus}
           cardValuesDealer={blackjackGame.dealer.cardPoints}
           cardValuesPlayer={blackjackGame.player.cardPoints}

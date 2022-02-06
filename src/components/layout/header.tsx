@@ -1,5 +1,5 @@
 import React from "react";
-import HumanPlayer from "../../model/player/HumanPlayer";
+import HumanPlayer from "../../model/player/humanPlayer";
 import Money from "../ui/money";
 
 type HeaderProps = {

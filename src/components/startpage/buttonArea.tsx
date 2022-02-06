@@ -2,7 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import Button from "../ui/button";
 import Wrapper from "../ui/wrapper/wrapper";
-import HumanPlayer from "../../model/player/HumanPlayer";
+import HumanPlayer from "../../model/player/humanPlayer";
 
 type ButtonAreaProps = {
   setIsProfileModalShown(value: boolean): void;
