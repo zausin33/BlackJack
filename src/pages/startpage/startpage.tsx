@@ -4,6 +4,7 @@ import ButtonArea from "../../components/startpage/buttonArea";
 import ChangeProfileModal from "../../components/startpage/changeProfileModal";
 import { useProfile } from "../../app";
 import HumanPlayer from "../../model/player/humanPlayer";
+import ConfirmResetModal from "../../components/startpage/confirmResetModal";
 
 function Startpage(): JSX.Element {
   const [profileList, setProfileList] = useProfile();
@@ -11,6 +12,7 @@ function Startpage(): JSX.Element {
 
   const [isChangeProfileModalShown, setIsChangeProfileModalShown] = React.useState(false);
   const [isNewProfileModalShown, setIsNewProfileModalShown] = React.useState(!someProfileExists);
+  const [isConfirmResetModalShown, setIsConfirmResetModalShown] = React.useState(false);
 
   const setAllProfilesInactive = (): void => {
     profileList.forEach((profile) => {
@@ -29,6 +31,7 @@ function Startpage(): JSX.Element {
   );
 
   const onResetAccount = (): void => {
+    setIsConfirmResetModalShown(false);
     const activeProfile = getActiveProfile();
     if (!activeProfile) return;
     activeProfile.money = HumanPlayer.START_MONEY;
@@ -43,10 +46,10 @@ function Startpage(): JSX.Element {
   };
 
   return (
-    <main>
+    <main style={{ height: "auto" }}>
       <ButtonArea
         setIsProfileModalShown={setIsChangeProfileModalShown}
-        onResetAccount={onResetAccount}
+        onResetAccount={() => setIsConfirmResetModalShown(true)}
         getActiveProfile={getActiveProfile}
       />
       <NewProfileModal
@@ -68,6 +71,11 @@ function Startpage(): JSX.Element {
           setIsChangeProfileModalShown(false);
           setIsNewProfileModalShown(true);
         }}
+      />
+      <ConfirmResetModal
+        show={isConfirmResetModalShown}
+        onCancel={() => setIsConfirmResetModalShown(false)}
+        onConfirm={onResetAccount}
       />
     </main>
   );

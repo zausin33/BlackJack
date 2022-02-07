@@ -9,7 +9,7 @@
 .modal-dialog {
     width: 585px;
     max-width: 585px;
-    margin-top: 0;
+    margin-top: -26px;
 }
 
 .content-modal-small {

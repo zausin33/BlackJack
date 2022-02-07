@@ -1,6 +1,7 @@
 import React from "react";
 import HumanPlayer from "../../model/player/humanPlayer";
 import Money from "../ui/money";
+import Button from "../ui/button";
 
 type HeaderProps = {
     activeProfile: HumanPlayer | undefined;
@@ -9,6 +10,7 @@ type HeaderProps = {
 function Header({ activeProfile }: HeaderProps): JSX.Element {
   return (
     <header style={{ position: "relative" }}>
+      <div id="end-game-btn-wrapper" />
       <h1>Blackjack</h1>
       {!!activeProfile && (
       <div style={{

@@ -7,10 +7,11 @@ type ButtonProps = {
   size?: "big" | "small";
   disabled?: boolean;
   style?: object;
+  className?: string;
 }
 
 function Button({
-  size = "big", disabled = false, style = {}, ...props
+  size = "big", disabled = false, style = {}, className = "", ...props
 }: ButtonProps): JSX.Element {
   const {
     children, styleType, onClick,
@@ -19,7 +20,7 @@ function Button({
   return (
     <button
       type="button"
-      className={`btn btn-${styleType} btn-${styleType}-${size}`}
+      className={`btn btn-${styleType} btn-${styleType}-${size} ${className}`}
       onClick={onClick}
       disabled={disabled}
       style={style}

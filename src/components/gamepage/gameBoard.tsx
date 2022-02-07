@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./gampageStyles.css";
+import ReactDOM from "react-dom";
+import { useNavigate } from "react-router-dom";
 import CardDeck from "./components/cardDeck/cardDeck";
 import ButtonArea from "./components/buttonArea";
 import HumanPlayer from "../../model/player/humanPlayer";
@@ -11,6 +13,7 @@ import MoneyArea from "../ui/moneyArea";
 import SideArea from "./components/sideArea";
 import RoundStartModal from "./components/roundStartModal";
 import { SHOW_ROUND_RESULT_MODEL_DELAY } from "../../model/blackjackGameConstants";
+import Button from "../ui/button";
 
 type GameBoardProps = {
     player: HumanPlayer;
@@ -21,6 +24,8 @@ type GameBoardProps = {
 function GameBoard({ player, profileList, setProfileList }: GameBoardProps): JSX.Element {
   const [blackjackGames, setBlackjackGame] = useState(() => [new BlackjackGame(player)]);
   const [roundHadEnded, setRoundHadEnded] = useState(false);
+  const [headerElement, setHeaderElement] = useState<HTMLElement | null>();
+  const navigate = useNavigate();
   const blackjackGame = blackjackGames[0];
   const { roundStatus } = blackjackGame;
 
@@ -43,6 +48,7 @@ function GameBoard({ player, profileList, setProfileList }: GameBoardProps): JSX
 
   useEffect(() => {
     blackjackGame.setUpdateUIFunction(updateGameBoard);
+    setHeaderElement(document.getElementById("end-game-btn-wrapper"));
   }, []);
 
   const onUpdateRoundBet = (newRoundBet: number): void => {
@@ -97,6 +103,14 @@ function GameBoard({ player, profileList, setProfileList }: GameBoardProps): JSX
         />
       </div>
       <div className="side-area"><SideArea /></div>
+      {headerElement && blackjackGame.roundStatus === RoundStatus.STARTING && (
+        ReactDOM.createPortal(
+          (
+            <Button styleType="secondary" onClick={() => navigate("/")}>
+              Spiel beenden
+            </Button>),
+          headerElement,
+        ))}
     </div>
   );
 }
