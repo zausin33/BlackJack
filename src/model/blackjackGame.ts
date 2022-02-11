@@ -69,8 +69,14 @@ class BlackjackGame {
   public startRound(): void {
     this.player.startRound();
     this.dealer.startRound();
-    this._roundStatus = RoundStatus.STARTING;
-    this.roundBet = this.initialRoundBet;
+    if (this.cardStack.hasToShuffle()) {
+      this.cardStack.initialize();
+      this._roundStatus = RoundStatus.SHUFFLE;
+    } else {
+      this._roundStatus = RoundStatus.STARTING;
+      this.roundBet = this.initialRoundBet;
+    }
+    this.updateUI();
   }
 
   public runRound(): void {

@@ -5,6 +5,8 @@ import CardNumber from "./cardNumber";
 class CardStack {
   private cards: Card[] = [];
 
+  private numberCardsFullStack = 0;
+
   public initialize(): void {
     this.fillCarsStack();
     this.shuffle();
@@ -12,6 +14,10 @@ class CardStack {
 
   public shift(): Card {
     return this.cards.shift()!;
+  }
+
+  public hasToShuffle(): boolean {
+    return this.cards.length <= (1 / 3) * this.numberCardsFullStack;
   }
 
   private fillCarsStack(): void {
@@ -26,6 +32,7 @@ class CardStack {
         });
       });
     }
+    this.numberCardsFullStack = this.cards.length;
   }
 
   private shuffle(): void {

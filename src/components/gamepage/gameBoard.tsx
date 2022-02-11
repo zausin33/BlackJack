@@ -14,6 +14,7 @@ import SideArea from "./components/sideArea";
 import RoundStartModal from "./components/roundStartModal";
 import { SHOW_ROUND_RESULT_MODEL_DELAY } from "../../model/blackjackGameConstants";
 import Button from "../ui/button";
+import ShuffleModal from "./components/shuffleModal";
 
 type GameBoardProps = {
     player: HumanPlayer;
@@ -30,7 +31,9 @@ function GameBoard({ player, profileList, setProfileList }: GameBoardProps): JSX
   const { roundStatus } = blackjackGame;
 
   useEffect(() => {
-    if (roundStatus === RoundStatus.RUNNING || roundStatus === RoundStatus.STARTING) {
+    if (roundStatus === RoundStatus.RUNNING
+        || roundStatus === RoundStatus.STARTING
+        || roundStatus === RoundStatus.SHUFFLE) {
       setRoundHadEnded(false);
     } else if (roundStatus === RoundStatus.LOST_SPLIT_HAND) {
       setRoundHadEnded(true);
@@ -91,6 +94,10 @@ function GameBoard({ player, profileList, setProfileList }: GameBoardProps): JSX
           roundBet={blackjackGame.roundBet}
           onUpdateRoundBet={onUpdateRoundBet}
           playerMoney={blackjackGame.player.money}
+        />
+        <ShuffleModal
+          show={blackjackGame.roundStatus === RoundStatus.SHUFFLE}
+          onConfirmShuffle={() => blackjackGame.startRound()}
         />
         <RoundResultModal
           show={roundHadEnded}

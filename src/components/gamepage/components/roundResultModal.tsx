@@ -22,6 +22,7 @@ function RoundResultModal(props: roundResultModalProps): JSX.Element {
 
   const roundResults = {
     [RoundStatus.STARTING]: "",
+    [RoundStatus.SHUFFLE]: "",
     [RoundStatus.WON]: "Gewonnen",
     [RoundStatus.LOST]: "Verloren",
     [RoundStatus.PLAYER_TO_MUCH_POINTS]: "Verloren",

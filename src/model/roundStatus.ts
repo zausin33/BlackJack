@@ -2,8 +2,10 @@
  * The round status describes the current state of the game.
  *
  *                                  STARTING<------------------------------------------------------------
- *                                     |                                         |                      |
- *                                  RUNNING-------------------------------->LOST_SPLIT_HAND             |
+ *                                  |    |                                       |                      |
+ *                      SHUFFLE-----    |                                        |                      |
+ *                        |            |                                         |                      |
+ *                        --------->RUNNING-------------------------------->LOST_SPLIT_HAND             |
  *                                    |                                                                 | New Round
  *            ------------------------------------------------------------------------                  |
  *           |                  |       |     |       |               |              |                  |
@@ -15,6 +17,7 @@
 
 enum RoundStatus {
     STARTING = "STARTING",
+    SHUFFLE = "Shuffle",
     RUNNING = "RUNNING",
     PLAYER_TO_MUCH_POINTS = "PLAYER_TO_MUCH_POINTS",
     WON = "WON",
