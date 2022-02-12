@@ -36,7 +36,7 @@ export const setupCardStack = (cards: Card[] = []): void => {
 };
 
 export const betFiveEuro = (): void => {
-  userEvent.click(screen.getByAltText("chip-5"));
+  userEvent.click(screen.getByTestId("chip-5"));
   userEvent.click(screen.getByText("OK"));
 };
 

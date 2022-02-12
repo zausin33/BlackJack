@@ -9,7 +9,13 @@ type chipButtonProps = {
 
 function ChipButton({ chip, onClick, disabled = false }: chipButtonProps): JSX.Element {
   return (
-    <button type="button" className="chip-button circle" onClick={onClick} disabled={disabled}>
+    <button
+      type="button"
+      className="chip-button circle"
+      onClick={onClick}
+      disabled={disabled}
+      data-testid={`chip-${chip}`}
+    >
       <img
         className={`chip-image chip-button-image ${disabled ? "chip-button-image-disabled" : ""}`}
         src={`${chipsFolder}chip-${chip}.png`}
