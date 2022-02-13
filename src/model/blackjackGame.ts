@@ -12,6 +12,8 @@ import RoundStatus from "./roundStatus";
 import { FinishedHand } from "./player/splitHandTypes";
 import CardNumber from "./card/cardNumber";
 import { checkForSplitEnding } from "./decorators";
+import getBasicStrategy, { BasicStrategyResult } from "./strategy/basicStrategy";
+import CardCounter from "./strategy/cardCounter";
 
 class BlackjackGame {
   public readonly player: HumanPlayer;
@@ -23,6 +25,10 @@ class BlackjackGame {
   public roundBet = 0;
 
   public isProcessing = false;
+
+  public cardCounter: CardCounter;
+
+  public basicStrategy: BasicStrategyResult | undefined;
 
   private cardStack = new CardStack();
 
@@ -40,6 +46,7 @@ class BlackjackGame {
   constructor(player: HumanPlayer) {
     this.dealer = new Dealer();
     this.player = player;
+    this.cardCounter = new CardCounter(this.cardStack);
     this.startGame();
   }
 
@@ -72,6 +79,7 @@ class BlackjackGame {
     if (this.cardStack.hasToShuffle()) {
       this.cardStack.initialize();
       this._roundStatus = RoundStatus.SHUFFLE;
+      this.cardCounter = new CardCounter(this.cardStack);
     } else {
       this._roundStatus = RoundStatus.STARTING;
       this.roundBet = this.initialRoundBet;
@@ -87,6 +95,7 @@ class BlackjackGame {
     this._moneyWonOrLost = 0;
     this._roundStatus = RoundStatus.RUNNING;
     this.checkForStartOptions();
+    this.basicStrategy = getBasicStrategy(this.player.hand.cards, this.dealer.hand.cards);
     this.updateUI();
   }
 
@@ -101,6 +110,7 @@ class BlackjackGame {
     const newCard = this.cardStack.shift();
     newCard.isConcealed = isConcealed;
     player.addToHand(newCard);
+    if (!isConcealed) this.cardCounter.addCardToCount(newCard);
   }
 
   private checkForStartOptions(): void {
@@ -184,9 +194,11 @@ class BlackjackGame {
       if (this.player.splitHands.length || this.player.finishedSplitHands.length) {
         this.lostSplitHand(playerHasDoubled);
       } else {
+        this.updateUI(() => this.revealSecondDealerCard());
         this.endLostRound(RoundStatus.PLAYER_TO_MUCH_POINTS);
       }
     }
+    this.basicStrategy = getBasicStrategy(this.player.hand.cards, this.dealer.hand.cards);
     this.updateUI();
   }
 
@@ -201,6 +213,7 @@ class BlackjackGame {
         this.updateUI(() => { this.stand(); });
       }
     } else {
+      this.updateUI(() => this.revealSecondDealerCard());
       this.endSplitRound();
     }
   }
@@ -224,13 +237,19 @@ class BlackjackGame {
   private takeCardAfterSplit(): void {
     this.takeCard(this.player);
     this._canPlayerSplit = this.areFirstTwoPlayerCardsEqual();
+    this.basicStrategy = getBasicStrategy(this.player.hand.cards, this.dealer.hand.cards);
   }
 
   public makeDealerMove(): void {
     this._canPlayerDoubleDown = false;
     this._canPlayerSplit = false;
-    this.dealer.hand.cards[1].isConcealed = false;
+    this.revealSecondDealerCard();
     this.takeCardDealer();
+  }
+
+  private revealSecondDealerCard(): void {
+    this.dealer.hand.cards[1].isConcealed = false;
+    this.cardCounter.addCardToCount(this.dealer.hand.cards[1]);
   }
 
   public takeCardDealer(): void {
@@ -277,7 +296,8 @@ class BlackjackGame {
   }
 
   @checkForSplitEnding()
-  private endTieRound(tieStatus: RoundStatus.TIE | RoundStatus.BLACKJACK_TIE = RoundStatus.TIE): void {
+  private endTieRound(tieStatus: RoundStatus.TIE | RoundStatus.BLACKJACK_TIE
+  = RoundStatus.TIE): void {
     this._moneyWonOrLost = this.roundBet;
     this.setNewPlayerMoney();
     this._roundStatus = tieStatus;

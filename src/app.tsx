@@ -7,10 +7,13 @@ import useLocalStorageForProfiles from "./utils/hooks/useLocalStorageForProfiles
 export default function App(): JSX.Element {
   const [profileList, setProfileList] = useLocalStorageForProfiles("profileList", []);
   const activeProfile = profileList.find((profile) => profile.isActive);
+  const updateActiveProfile = (): void => {
+    setProfileList([...profileList]);
+  };
 
   return (
     <div className="App">
-      <Header activeProfile={activeProfile} />
+      <Header activeProfile={activeProfile} updateActiveProfile={updateActiveProfile} />
       <Outlet context={[profileList, setProfileList]} />
     </div>
   );

@@ -1,7 +1,7 @@
 :root {
     --primary-color: #000000;
     --primary-color-contrast: #C1B474;
-    --primary-color-focus: #C1B474;
+    --primary-color-focus: #a3870036;
     --primary-color-light: #363636;
 
     --link-color: #00bcd4;
@@ -18,6 +18,8 @@
 
     --warn-color: #ffc107;
     --warn-color-contrast: #212529;
+
+    --color-silver: #00000073;
 
     --row-padding: .5em;
     --border-radius: .25em;
@@ -103,6 +105,10 @@ h2, .h2 {
 .btn-primary-small {
     width: 200px;
     font-size: 25px;
+}
+
+.btn-primary-auto {
+    width: auto;
 }
 
 .btn-primary:disabled {
@@ -215,6 +221,47 @@ header {
 
 #end-game-btn-wrapper {
     position: absolute;
-    left: 30px;
+    left: 60px;
     z-index: 2000;
+}
+
+#menu-btn-wrapper {
+    position: absolute;
+    left: 20px;
+    z-index: 2000;
+}
+
+.menu-btn {
+    color: var(--primary-color-contrast);
+    background: none;
+    border: none;
+}
+
+.offcanvas {
+    z-index: 2001;
+    font-family: var(--font-family-sans-serif);
+    color: black;
+}
+
+.offcanvas-title {
+    font-size: 30px;
+}
+
+.form-check-input {
+   cursor: pointer;
+}
+
+.form-check-input:checked {
+    background-color: var(--primary-color-contrast);
+    border-color: var(--primary-color-contrast);
+}
+
+.form-check-input:focus {
+    border-color: var(--primary-color-focus);
+    outline: 0;
+    box-shadow: 0 0 0 0.25rem var(--primary-color-focus);
+}
+
+.btn-close:focus {
+    box-shadow: 0 0 0 0.25rem var(--primary-color-focus);
 }

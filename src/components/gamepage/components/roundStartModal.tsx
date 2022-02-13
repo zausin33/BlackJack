@@ -48,8 +48,10 @@ function RoundStartModal(props: roundStartModalProps): JSX.Element {
   useEffect(() => {
     if (roundBet > playerMoney) {
       onUpdateRoundBet(0);
+    } else {
+      setAvailablePlayerMoney(playerMoney - roundBet);
     }
-  }, [roundBet, playerMoney]);
+  }, []);
 
   const confirmRoundBet = (): void => {
     setRoundBetHistory([roundBetHistory[roundBetHistory.length - 1]]);
@@ -70,7 +72,7 @@ function RoundStartModal(props: roundStartModalProps): JSX.Element {
           styleType="primary"
           onClick={confirmRoundBet}
           size="small"
-          disabled={roundBet === 0}
+          disabled={roundBet === 0 || roundBet > playerMoney}
         >
           OK
         </Button>

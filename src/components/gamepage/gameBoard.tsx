@@ -10,7 +10,7 @@ import RoundResultModal from "./components/roundResultModal";
 import RoundStatus from "../../model/roundStatus";
 import CardStack from "./components/cardStack";
 import MoneyArea from "../ui/moneyArea";
-import SideArea from "./components/sideArea";
+import SideArea from "./components/sideArea/sideArea";
 import RoundStartModal from "./components/roundStartModal";
 import { SHOW_ROUND_RESULT_MODEL_DELAY } from "../../model/blackjackGameConstants";
 import Button from "../ui/button";
@@ -88,6 +88,7 @@ function GameBoard({ player, profileList, setProfileList }: GameBoardProps): JSX
             <MoneyArea money={blackjackGame.player.money} className="money-area" />
           </div>
         </div>
+        {blackjackGame.roundStatus === RoundStatus.STARTING && (
         <RoundStartModal
           show={blackjackGame.roundStatus === RoundStatus.STARTING}
           onConfirmRoundBet={() => blackjackGame.runRound()}
@@ -95,6 +96,7 @@ function GameBoard({ player, profileList, setProfileList }: GameBoardProps): JSX
           onUpdateRoundBet={onUpdateRoundBet}
           playerMoney={blackjackGame.player.money}
         />
+        )}
         <ShuffleModal
           show={blackjackGame.roundStatus === RoundStatus.SHUFFLE}
           onConfirmShuffle={() => blackjackGame.startRound()}
@@ -109,7 +111,15 @@ function GameBoard({ player, profileList, setProfileList }: GameBoardProps): JSX
           finishedSplitHands={blackjackGame.player.finishedSplitHands}
         />
       </div>
-      <div className="side-area"><SideArea /></div>
+      <div className="side-area">
+        <SideArea
+          basicStrategy={blackjackGame.basicStrategy}
+          cardCounter={blackjackGame.cardCounter}
+          roundStatus={blackjackGame.roundStatus}
+          useBasicStrategy={blackjackGame.player.settings.useBasicStrategy}
+          useCardCounter={blackjackGame.player.settings.useCardCounter}
+        />
+      </div>
       {headerElement && blackjackGame.roundStatus === RoundStatus.STARTING && (
         ReactDOM.createPortal(
           (

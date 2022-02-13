@@ -1,10 +1,10 @@
 import React from "react";
 
 type ButtonProps = {
-  children: string;
+  children: string | JSX.Element;
   styleType: "primary" | "secondary";
   onClick(event: React.MouseEvent<HTMLButtonElement>): void;
-  size?: "big" | "small";
+  size?: "big" | "small" | "auto";
   disabled?: boolean;
   style?: object;
   className?: string;

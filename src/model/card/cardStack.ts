@@ -20,6 +20,10 @@ class CardStack {
     return this.cards.length <= (1 / 3) * this.numberCardsFullStack;
   }
 
+  get size(): number {
+    return this.cards.length;
+  }
+
   private fillCarsStack(): void {
     let idCounter = 0;
     for (let i = 0; i < 6; i += 1) {

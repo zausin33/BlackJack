@@ -1,5 +1,5 @@
 import Card from "../card/card";
-import calculateCardPoints from "../cardCounter";
+import calculateCardPoints from "../cardPointCalculator";
 import { BLACKJACK_NUMBER } from "../blackjackGameConstants";
 import RoundStatus from "../roundStatus";
 import { FinishedHand, Hand } from "./splitHandTypes";
