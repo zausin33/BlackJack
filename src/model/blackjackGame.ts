@@ -40,12 +40,15 @@ class BlackjackGame {
 
   private _canPlayerSplit = false;
 
+  private updateUIDelay: number;
+
   // eslint-disable-next-line @typescript-eslint/no-empty-function,class-methods-use-this
   private updateUIFunction: () => void = () => {};
 
-  constructor(player: HumanPlayer) {
+  constructor(player: HumanPlayer, updateUIDelay: number) {
     this.dealer = new Dealer();
     this.player = player;
+    this.updateUIDelay = updateUIDelay;
     this.cardCounter = new CardCounter(this.cardStack);
     this.startGame();
   }
@@ -57,10 +60,15 @@ class BlackjackGame {
   private updateUI(codeToExecuteWithDelay: (() => void) | undefined = undefined): void {
     this.updateUIFunction();
     if (codeToExecuteWithDelay === undefined) return;
-    setTimeout(() => {
+    if (this.updateUIDelay > 0) {
+      setTimeout(() => {
+        codeToExecuteWithDelay?.call(this);
+        this.updateUIFunction();
+      }, this.updateUIDelay);
+    } else {
       codeToExecuteWithDelay?.call(this);
       this.updateUIFunction();
-    }, DELAY);
+    }
   }
 
   public setProcessing(isProcessing: boolean): void {
@@ -252,7 +260,7 @@ class BlackjackGame {
     this.cardCounter.addCardToCount(this.dealer.hand.cards[1]);
   }
 
-  public takeCardDealer(): void {
+  private takeCardDealer(): void {
     this.setProcessing(true);
     const cardValues = this.dealer.cardPoints;
     if (cardValues <= THRESHOLD_DEALER_MUST_TAKE_CARD) {

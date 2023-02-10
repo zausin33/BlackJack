@@ -12,7 +12,7 @@ import CardStack from "./components/cardStack";
 import MoneyArea from "../ui/moneyArea";
 import SideArea from "./components/sideArea/sideArea";
 import RoundStartModal from "./components/roundStartModal";
-import { SHOW_ROUND_RESULT_MODEL_DELAY } from "../../model/blackjackGameConstants";
+import { DELAY, SHOW_ROUND_RESULT_MODEL_DELAY } from "../../model/blackjackGameConstants";
 import Button from "../ui/button";
 import ShuffleModal from "./components/shuffleModal";
 
@@ -23,7 +23,7 @@ type GameBoardProps = {
 }
 
 function GameBoard({ player, profileList, setProfileList }: GameBoardProps): JSX.Element {
-  const [blackjackGames, setBlackjackGame] = useState(() => [new BlackjackGame(player)]);
+  const [blackjackGames, setBlackjackGame] = useState(() => [new BlackjackGame(player, DELAY)]);
   const [roundHadEnded, setRoundHadEnded] = useState(false);
   const [headerElement, setHeaderElement] = useState<HTMLElement | null>();
   const navigate = useNavigate();
